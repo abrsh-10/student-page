@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 <div class="content mt-4">
   <div class="container">
     <div class="row">
@@ -31,10 +32,7 @@
           <div
             class="card-read-more d-flex justify-content-center align-items-center"
           >
-            <button
-              href="http://www.fostrap.com/2016/03/bootstrap-3-carousel-fade-effect.html"
-              class="btn btn-block"
-            >
+            <button class="btn btn-block" (click)="onSelectCourse(course.id)">
               see details
             </button>
           </div>

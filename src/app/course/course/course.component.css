@@ -1,0 +1,89 @@
+.navbar{
+    padding: 0px;
+}
+.brand{
+    display: flex;
+    place-items: center;
+    justify-content: space-between;
+    margin-left: -11px;
+    text-decoration: none;
+    color: black;
+}
+.home-logo{
+    width: 130px;
+    height: 100px;
+    display: flex;
+    place-items: center;
+    justify-content: center;
+    background-color: rgb(234, 231, 231);
+    text-decoration: none;
+}
+.brand>h1{
+   margin-left: 10%;
+}
+.home-logo:hover , .hide-button:hover{
+    background-color: rgb(199, 198, 198);
+    cursor: pointer;
+}
+.right-side {
+    display: flex;
+    margin-right: 5px;
+}
+
+.aau-logo {
+    width: 70px;
+    height: 70px;
+    margin-right: 10px;
+}
+
+.slogan {
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    font-size: xx-large;
+    font-family: "Proxima Nova",sans-serif;
+}
+.main>span{
+    font-weight: 600;
+}
+.side-bar{
+    padding: 0px;
+    height: 100vh;
+    background-color: white;
+}
+.hide-button{
+        width: 130px;
+        height: 60px;
+        display: flex;
+        place-items: center;
+        justify-content: center;
+        background-color: rgb(234, 231, 231);
+        text-decoration: none;
+        margin-left: auto;
+}
+.side-bar-items{
+    background-color: maroon;
+    color: white;
+    display: flex;
+    place-items: center;
+    justify-content: left;
+    font-family: "Proxima Nova",sans-serif;
+    font-size: larger;
+    height: 50px;
+    margin-bottom: 1.5px;
+    padding-left: 5px;
+    cursor: pointer;
+}
+.showSideBar-Icon{
+    background-color: maroon;
+    margin-top: 20px;
+    width:50px;
+    height: 50px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+}

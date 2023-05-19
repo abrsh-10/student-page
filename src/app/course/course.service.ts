@@ -19,4 +19,8 @@ export class CourseService extends DataService<Course> {
     const url = `${this.getUrl()}/id`;
     return this.fetchData(url, id);
   }
+  getCourse(id: string): Observable<Course> {
+    const url = `${this.getUrl()}/id`;
+    return this.getById(url, id);
+  }
 }

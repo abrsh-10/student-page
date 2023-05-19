@@ -1,1 +1,42 @@
-<p>course works!</p>
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="brand">
+      <div class="home-logo col-md-2 col-sm-1" (click)="changeRoute('/')">
+        <img
+          src="assets/images/home-button.png"
+          alt="home logo"
+          width="30"
+          height="24"
+        />
+      </div>
+      <h1 class="col-10">{{ course.courseName }}</h1>
+    </a>
+    <div class="right-side d-none d-lg-flex">
+      <div>
+        <img src="assets/images/aaulogo.png" alt="AAU logo" class="aau-logo" />
+      </div>
+      <div class="slogan">
+        <h2 class="main mt-3"><span>AAU</span> online learning</h2>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div *ngIf="showSideBar" class="side-bar col-lg-3 col-12">
+      <div class="hide-button" (click)="toogleSideBar()">&#10005; Hide</div>
+      <div class="side-bar-items">Course Materials</div>
+      <div class="side-bar-items">Topics</div>
+      <div class="side-bar-items">Exams</div>
+      <div class="side-bar-items">Assessments</div>
+    </div>
+    <div
+      *ngIf="!showSideBar"
+      class="showSideBar-Icon"
+      (click)="toogleSideBar()"
+    >
+      ≡
+    </div>
+  </div>
+</div>

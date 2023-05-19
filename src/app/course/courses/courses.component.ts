@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NavbarComponent } from 'src/app/navbar/navbar.component';
+import { FooterComponent } from 'src/app/footer/footer.component';
 import { CourseService } from '../course.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-courses',
@@ -17,11 +20,15 @@ export class CoursesComponent implements OnInit {
     '645fe0f6922399163eaf8a99',
   ];
 
-  constructor(private courseService: CourseService) {}
+  constructor(private courseService: CourseService, private router: Router) {}
 
   ngOnInit() {
     this.courseService.getCourses(this.courseIds).subscribe((data) => {
       this.courses = data;
     });
+  }
+
+  onSelectCourse(courseId: number) {
+    this.router.navigate(['/course', courseId]);
   }
 }
