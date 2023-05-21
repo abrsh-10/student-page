@@ -40,4 +40,8 @@ export class DataService<T> {
     const apiUrl = `${url}/${id}`;
     return this.http.delete<T>(apiUrl);
   }
+  downloadFile(id: string) {
+    const url = `http://localhost:8084/file/download/${id}`; // replace with your backend API endpoint
+    return this.http.get(url, { responseType: 'blob' });
+  }
 }

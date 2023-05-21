@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from 'src/app/navbar/navbar.component';
 import { FooterComponent } from 'src/app/footer/footer.component';
-import { CourseService } from '../course.service';
+import { CourseService } from '../services/course.service';
 import { Router } from '@angular/router';
 
 @Component({

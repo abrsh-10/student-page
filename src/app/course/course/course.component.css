@@ -18,7 +18,7 @@
     background-color: rgb(234, 231, 231);
     text-decoration: none;
 }
-.brand>h1{
+.brand>h2{
    margin-left: 10%;
 }
 .home-logo:hover , .hide-button:hover{
@@ -50,8 +50,8 @@
 }
 .side-bar{
     padding: 0px;
-    height: 100vh;
     background-color: white;
+    margin-right: auto;
 }
 .hide-button{
         width: 130px;
@@ -63,6 +63,9 @@
         text-decoration: none;
         margin-left: auto;
 }
+.side-bar-container{
+    position: relative;
+}
 .side-bar-items{
     background-color: maroon;
     color: white;
@@ -73,12 +76,41 @@
     font-size: larger;
     height: 50px;
     margin-bottom: 1.5px;
-    padding-left: 5px;
+    padding-left: 15px;
     cursor: pointer;
+}
+.side-bar-item-clicked{
+            background-color: brown;
+            color: white;
+            display: flex;
+            place-items: center;
+            justify-content: left;
+            font-family: "Proxima Nova", sans-serif;
+            font-size: larger;
+            height: 50px;
+            margin-bottom: 1.5px;
+            padding-left: 15px;
+            cursor: pointer;
+            text-decoration: underline;
+}
+.side-bar-sub-items{
+        background-color: rgb(128, 81, 0);
+        color: white;
+        display: flex;
+        place-items: center;
+        justify-content: left;
+        font-family: "Proxima Nova", sans-serif;
+        font-size: large;
+        height: 35px;
+        margin-bottom: 1.5px;
+        margin-left: auto;
+        padding-left: 35px;
+        cursor: pointer;
 }
 .showSideBar-Icon{
     background-color: maroon;
     margin-top: 20px;
+    margin-right: auto;
     width:50px;
     height: 50px;
     border-top-right-radius: 6px;
@@ -86,4 +118,23 @@
     color: white;
     font-size: 30px;
     cursor: pointer;
+}
+.main-content{
+    background-color: rgb(245, 225, 225);
+    height: 100vh;
+    margin-top: 20px;
+    margin-right: auto;
+}
+.truncate {
+    max-width: 200px;
+}
+.courseMaterial-description{
+margin-right: 5px;
+}
+.card-body{
+    overflow: auto;
+}
+.btn:hover{
+    background-color: maroon;
+        color: white;
 }
