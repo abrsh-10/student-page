@@ -8,9 +8,8 @@ a{
     text-transform: capitalize;
 }
 li a:hover {
-    background-color: lightgrey;
-    border-radius: 50px;
-    color: maroon;
+    color: wheat;
+    transform: translateY(-5px);
 }
 ul{
     margin-right: 50px;

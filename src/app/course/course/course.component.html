@@ -55,8 +55,24 @@
           <span class="bullet">&#8226;</span> &nbsp;{{ topic.topicTitle }}
         </div>
       </div>
-      <div class="side-bar-items">Exams</div>
-      <div class="side-bar-items">Assignments</div>
+      <div
+        [ngClass]="{
+          'side-bar-items': !showExam,
+          'side-bar-item-clicked': showExam
+        }"
+        (click)="toogleSideBarItems(4)"
+      >
+        Exams
+      </div>
+      <div
+        [ngClass]="{
+          'side-bar-items': !showAssignment,
+          'side-bar-item-clicked': showAssignment
+        }"
+        (click)="toogleSideBarItems(5)"
+      >
+        Assignments
+      </div>
     </div>
     <div
       *ngIf="!showSideBar"
@@ -158,6 +174,102 @@
                   <div class="align-self-center me-1">
                     <button class="btn btn-outline-dark mb-0">
                       view lesson
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section *ngIf="showExam">
+        <div class="row">
+          <div class="col-12 mt-3 mb-1">
+            <h5 class="text-uppercase">Exams</h5>
+            <p class="text-muted">Exams for this Course</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 mb-4" *ngFor="let exam of exams">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between p-md-1">
+                  <div class="d-flex flex-row">
+                    <div class="align-self-center me-2">
+                      <i class="material-icons">video_library</i>
+                    </div>
+                    <div>
+                      <h4 class="truncate">
+                        {{ exam.examName }}
+                      </h4>
+                      <p class="text-muted" style="white-space: pre-wrap">
+                        weight:<b>{{ exam.weight }} marks</b>
+                      </p>
+                      <p class="text-muted" style="white-space: pre-wrap">
+                        {{ exam.startTime | date }}
+                      </p>
+                      <p class="text-muted" style="white-space: pre-wrap">
+                        duration: for <b>{{ exam.duration }} minutes</b>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="align-self-center me-1">
+                    <button class="btn btn-outline-dark mb-0">
+                      Start Exam
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section *ngIf="showAssignment">
+        <div class="row">
+          <div class="col-12 mt-3 mb-1">
+            <h5 class="text-uppercase">Assignments</h5>
+            <p>your assignments for this course are listed below</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 mb-4" *ngFor="let assignment of assignments">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between p-md-1">
+                  <div class="d-flex flex-row">
+                    <div class="align-self-top">
+                      <i class="fa fa-book fa-lg me-4"></i>
+                    </div>
+                    <div>
+                      <h4 class="truncate">
+                        {{ assignment.assignmentName }}
+                      </h4>
+                      <p
+                        class="courseMaterial-description text-muted"
+                        style="white-space: pre-wrap"
+                      >
+                        <span class="bullet">&#8226;</span>
+                        {{ assignment.assignmentDescription }}
+                      </p>
+                      <p class="mb-0">
+                        {{
+                          assignment.assignmentSize / 1048576 | number : "1.2-2"
+                        }}
+                        MB
+                      </p>
+                    </div>
+                  </div>
+                  <div class="align-self-center me-1">
+                    <button
+                      class="btn btn-outline-dark mb-0"
+                      (click)="
+                        downloadFile(
+                          assignment.assignmentId,
+                          assignment.assignmentName
+                        )
+                      "
+                    >
+                      download
                     </button>
                   </div>
                 </div>

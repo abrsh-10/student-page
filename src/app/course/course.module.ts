@@ -5,7 +5,6 @@ import { CourseRoutingModule } from './course-routing.module';
 import { CoursesComponent } from './courses/courses.component';
 import { CourseComponent } from './course/course.component';
 import { NavbarComponent } from '../navbar/navbar.component';
-
 const routes = [{ path: '', component: CoursesComponent }];
 @NgModule({
   declarations: [CoursesComponent, NavbarComponent, CourseComponent],
