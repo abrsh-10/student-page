@@ -81,7 +81,7 @@
     >
       ≡
     </div>
-    <div class="main-content col-lg-8 col-md-12">
+    <div class="main-content col-lg-8 col-md-12" style="overflow: auto">
       <section *ngIf="showCourseMaterial">
         <div class="row">
           <div class="col-12 mt-3 mb-1">
@@ -214,7 +214,10 @@
                     </div>
                   </div>
                   <div class="align-self-center me-1">
-                    <button class="btn btn-outline-dark mb-0">
+                    <button
+                      class="btn btn-outline-dark mb-0"
+                      (click)="toogleSideBarItems(6, undefined, exam)"
+                    >
                       Start Exam
                     </button>
                   </div>
@@ -271,6 +274,44 @@
                     >
                       download
                     </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section *ngIf="showQuestion">
+        <div class="row">
+          <div class="col-12 mt-3 mb-1">
+            <h5 class="text-uppercase">questions</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 mb-3" *ngFor="let question of examQuestions">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between p-md-1">
+                  <div class="d-flex flex-column">
+                    <div>
+                      <p>
+                        <span>{{ question.questionNumber }}</span
+                        >.{{ question.question }}
+                      </p>
+                    </div>
+                    <div class="options">
+                      <label
+                        *ngFor="let option of question.options"
+                        style="margin-right: 20px"
+                      >
+                        <input
+                          type="radio"
+                          name="{{ question.id }}"
+                          [value]="option"
+                        />
+                        {{ option }}
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>

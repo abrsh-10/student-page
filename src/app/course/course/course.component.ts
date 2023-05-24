@@ -10,6 +10,7 @@ import { Topic } from '../models/topic';
 import { ExamService } from '../services/exam.service';
 import { DatePipe } from '@angular/common';
 import { AssignmentService } from '../services/assignment.service';
+import { Exam } from '../models/exam';
 
 @Component({
   selector: 'app-course',
@@ -26,6 +27,7 @@ export class CourseComponent implements OnInit {
   showLesson = false;
   showExam = false;
   showAssignment = false;
+  showQuestion? = false;
   courseMaterials?: any;
   topics?: any;
   topicTitle?: string;
@@ -33,6 +35,7 @@ export class CourseComponent implements OnInit {
   lessons?: any;
   exams?: any;
   assignments?: any;
+  examQuestions?: any;
 
   constructor(
     private router: Router,
@@ -41,9 +44,8 @@ export class CourseComponent implements OnInit {
     private courseMaterialService: CourseMaterialService,
     private topicService: TopicService,
     private lessonService: LessonService,
-    private ExamService: ExamService,
-    private assignmentService: AssignmentService,
-    datePipe: DatePipe
+    private examService: ExamService,
+    private assignmentService: AssignmentService
   ) {}
   ngOnInit(): void {
     this.courseId = this.route.snapshot.paramMap.get('id');
@@ -57,7 +59,7 @@ export class CourseComponent implements OnInit {
   toogleSideBar() {
     this.showSideBar = !this.showSideBar;
   }
-  toogleSideBarItems(position: Number, topic?: Topic) {
+  toogleSideBarItems(position: Number, topic?: Topic, exam?: Exam) {
     if (position == 1) {
       this.showTopic = false;
       this.showLesson = false;
@@ -94,7 +96,7 @@ export class CourseComponent implements OnInit {
       this.showLesson = false;
       this.showAssignment = false;
       this.showExam = !this.showExam;
-      this.ExamService.getExams(this.courseId).subscribe((data) => {
+      this.examService.getExams(this.courseId).subscribe((data) => {
         this.exams = data;
       });
     } else if (position == 5) {
@@ -106,6 +108,18 @@ export class CourseComponent implements OnInit {
       this.assignmentService.getAssignments(this.courseId).subscribe((data) => {
         this.assignments = data;
       });
+    } else if (position == 6) {
+      this.showCourseMaterial = false;
+      this.showTopic = false;
+      this.showLesson = false;
+      this.showExam = false;
+      this.showAssignment = false;
+      this.showQuestion = true;
+      this.examService
+        .getQuestions('64329217f6d885321c87ee12')
+        .subscribe((data) => {
+          this.examQuestions = data;
+        });
     }
   }
   downloadFile(id: string, fileName: string) {
