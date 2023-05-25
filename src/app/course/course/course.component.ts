@@ -36,6 +36,7 @@ export class CourseComponent implements OnInit {
   exams?: any;
   assignments?: any;
   examQuestions?: any;
+  randomizedQuestions?: any;
 
   constructor(
     private router: Router,
@@ -65,6 +66,7 @@ export class CourseComponent implements OnInit {
       this.showLesson = false;
       this.showExam = false;
       this.showAssignment = false;
+      this.showQuestion = false;
       this.showCourseMaterial = !this.showCourseMaterial;
       this.courseMaterialService
         .getCourseMaterial(this.courseId)
@@ -76,6 +78,7 @@ export class CourseComponent implements OnInit {
       this.showLesson = false;
       this.showExam = false;
       this.showAssignment = false;
+      this.showQuestion = false;
       this.showTopic = !this.showTopic;
       this.topicService.getTopics(this.courseId).subscribe((data) => {
         this.topics = data;
@@ -84,6 +87,7 @@ export class CourseComponent implements OnInit {
       this.showCourseMaterial = false;
       this.showExam = false;
       this.showAssignment = false;
+      this.showQuestion = false;
       this.showLesson = true;
       this.topicTitle = topic?.topicTitle;
       this.topicDescription = topic?.topicDescription;
@@ -95,6 +99,7 @@ export class CourseComponent implements OnInit {
       this.showTopic = false;
       this.showLesson = false;
       this.showAssignment = false;
+      this.showQuestion = false;
       this.showExam = !this.showExam;
       this.examService.getExams(this.courseId).subscribe((data) => {
         this.exams = data;
@@ -104,6 +109,7 @@ export class CourseComponent implements OnInit {
       this.showTopic = false;
       this.showLesson = false;
       this.showExam = false;
+      this.showQuestion = false;
       this.showAssignment = !this.showAssignment;
       this.assignmentService.getAssignments(this.courseId).subscribe((data) => {
         this.assignments = data;
@@ -115,11 +121,9 @@ export class CourseComponent implements OnInit {
       this.showExam = false;
       this.showAssignment = false;
       this.showQuestion = true;
-      this.examService
-        .getQuestions('64329217f6d885321c87ee12')
-        .subscribe((data) => {
-          this.examQuestions = data;
-        });
+      this.examService.getQuestions(exam?.examId!).subscribe((data) => {
+        this.examQuestions = data;
+      });
     }
   }
   downloadFile(id: string, fileName: string) {
