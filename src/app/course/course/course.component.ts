@@ -7,7 +7,7 @@ import { CourseMaterialService } from '../services/course-material.service';
 import { TopicService } from '../services/topic.service';
 import { LessonService } from '../services/lesson.service';
 import { Topic } from '../models/topic';
-import { ExamService } from '../services/exam.service';
+import { ExamService } from '../../exam/exam.service';
 import { DatePipe } from '@angular/common';
 import { AssignmentService } from '../services/assignment.service';
 import { Exam } from '../models/exam';
@@ -36,7 +36,6 @@ export class CourseComponent implements OnInit {
   exams?: any;
   assignments?: any;
   examQuestions?: any;
-  randomizedQuestions?: any;
 
   constructor(
     private router: Router,
@@ -101,9 +100,7 @@ export class CourseComponent implements OnInit {
       this.showAssignment = false;
       this.showQuestion = false;
       this.showExam = !this.showExam;
-      this.examService.getExams(this.courseId).subscribe((data) => {
-        this.exams = data;
-      });
+      this.router.navigate(['/exams']);
     } else if (position == 5) {
       this.showCourseMaterial = false;
       this.showTopic = false;

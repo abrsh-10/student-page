@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { DataService } from 'src/app/service/DataService';
-import { Exam } from '../models/exam';
+import { Exam } from '../course/models/exam';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Question } from '../models/question';
+import { Question } from '../course/models/question';
 
 @Injectable({
   providedIn: 'root',
