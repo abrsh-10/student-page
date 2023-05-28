@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ExamService } from '../services/exam.service';
 import { Question } from 'src/app/models/question';
+import { Answer } from 'src/app/models/answer';
 
 @Component({
   selector: 'app-exam',
@@ -12,6 +13,7 @@ export class ExamComponent implements OnInit {
   examQuestions!: any;
   questions?: any[];
   currentPage!: number;
+  answers: Answer[] = [];
 
   constructor(private examService: ExamService) {}
 
@@ -19,7 +21,6 @@ export class ExamComponent implements OnInit {
     this.currentPage = 1;
     this.examService.getQuestions(this.examId!).subscribe((data) => {
       this.examQuestions = data;
-      console.log(this.examQuestions);
       this.loadQuestions();
     });
   }
@@ -30,7 +31,7 @@ export class ExamComponent implements OnInit {
       return;
     }
     this.currentPage++;
-    console.log(this.currentPage);
+    console.log(this.answers);
     this.loadQuestions();
   }
   loadQuestions() {
@@ -52,5 +53,17 @@ export class ExamComponent implements OnInit {
   }
   getLetter(index: number): string {
     return String.fromCharCode(65 + index);
+  }
+  saveAnswer(questionType: string, questionNumber: number, answer: string) {
+    this.answers.forEach((answer) => {
+      if (
+        answer.questionNumber == questionNumber &&
+        answer.questionType == questionType
+      ) {
+        this.answers.splice(this.answers.indexOf(answer), 1);
+      }
+    });
+    const newAnswer = { questionType, questionNumber, answer };
+    this.answers.push(newAnswer);
   }
 }

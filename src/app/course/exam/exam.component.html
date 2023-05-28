@@ -11,6 +11,9 @@
             type="radio"
             [name]="question.questionNumber"
             [value]="choice"
+            (change)="
+              saveAnswer(question.questionType, question.questionNumber, choice)
+            "
           />
           <label class="form-check-label" for="{{ choice }}">
             {{ choice }}
@@ -42,6 +45,13 @@
             [name]="question.questionNumber"
             [value]="choice"
             id="{{ question.questionNumber }}-{{ i }}"
+            (change)="
+              saveAnswer(
+                question.questionType,
+                question.questionNumber,
+                getLetter(i) + '. ' + choice
+              )
+            "
           />
           <label
             class="form-check-label"
@@ -66,7 +76,17 @@
       <!-- Render a true/false question -->
       <div class="question p-2 m-4">
         <h5>{{ i + 1 + ". " + question.question }}</h5>
-        <input type="text" />
+        <input
+          type="text"
+          #fill
+          (change)="
+            saveAnswer(
+              question.questionType,
+              question.questionNumber,
+              fill.value
+            )
+          "
+        />
       </div>
     </ng-container>
   </div>
@@ -83,7 +103,16 @@
       <!-- Render a true/false question -->
       <div class="question p-2 m-4">
         <h5>{{ i + 1 + ". " + question.question }}</h5>
-        <textarea></textarea>
+        <textarea
+          #fill
+          (change)="
+            saveAnswer(
+              question.questionType,
+              question.questionNumber,
+              fill.value
+            )
+          "
+        ></textarea>
       </div>
     </ng-container>
   </div>
