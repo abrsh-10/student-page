@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DataService } from '../../service/DataService';
-import { CourseMaterial } from '../models/course-material';
+import { CourseMaterial } from '../../models/course-material';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 

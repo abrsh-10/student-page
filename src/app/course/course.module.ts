@@ -4,8 +4,9 @@ import { CourseRoutingModule } from './course-routing.module';
 import { CoursesComponent } from './courses/courses.component';
 import { CourseComponent } from './course/course.component';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { ExamComponent } from './exam/exam.component';
 @NgModule({
-  declarations: [CoursesComponent, NavbarComponent, CourseComponent],
+  declarations: [CoursesComponent, NavbarComponent, CourseComponent, ExamComponent],
   imports: [CommonModule, CourseRoutingModule],
   exports: [CoursesComponent],
 })

@@ -1,16 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../services/course.service';
-import { Course } from '../models/course';
-import { CourseMaterial } from '../models/course-material';
+import { Course } from '../../models/course';
+import { CourseMaterial } from '../../models/course-material';
 import { CourseMaterialService } from '../services/course-material.service';
 import { TopicService } from '../services/topic.service';
 import { LessonService } from '../services/lesson.service';
-import { Topic } from '../models/topic';
-import { ExamService } from '../../exam/exam.service';
+import { Topic } from '../../models/topic';
+import { ExamService } from '../services/exam.service';
 import { DatePipe } from '@angular/common';
 import { AssignmentService } from '../services/assignment.service';
-import { Exam } from '../models/exam';
+import { Exam } from '../../models/exam';
 
 @Component({
   selector: 'app-course',
@@ -36,6 +36,10 @@ export class CourseComponent implements OnInit {
   exams?: any;
   assignments?: any;
   examQuestions?: any;
+  questions?: any[];
+  examId?: String;
+  currentPage = 0;
+  questionsPerPage = 4;
 
   constructor(
     private router: Router,
@@ -59,7 +63,7 @@ export class CourseComponent implements OnInit {
   toogleSideBar() {
     this.showSideBar = !this.showSideBar;
   }
-  toogleSideBarItems(position: Number, topic?: Topic, exam?: Exam) {
+  toogleSideBarItems(position: Number, topic?: Topic, examId?: String) {
     if (position == 1) {
       this.showTopic = false;
       this.showLesson = false;
@@ -100,7 +104,9 @@ export class CourseComponent implements OnInit {
       this.showAssignment = false;
       this.showQuestion = false;
       this.showExam = !this.showExam;
-      this.router.navigate(['/exams']);
+      this.examService.getExams(this.courseId).subscribe((data) => {
+        this.examQuestions = data;
+      });
     } else if (position == 5) {
       this.showCourseMaterial = false;
       this.showTopic = false;
@@ -118,10 +124,26 @@ export class CourseComponent implements OnInit {
       this.showExam = false;
       this.showAssignment = false;
       this.showQuestion = true;
-      this.examService.getQuestions(exam?.examId!).subscribe((data) => {
-        this.examQuestions = data;
-      });
+      this.examId = examId;
     }
+  }
+  nextPage() {
+    // Increment the current page
+    this.currentPage++;
+
+    // Check if there are more pages to display
+    if (this.currentPage > this.examQuestions.length) {
+      return;
+    }
+
+    // Load the questions for the current page
+    this.loadQuestions();
+  }
+  loadQuestions() {
+    this.questions = this.examQuestions.slice(
+      this.currentPage * this.questionsPerPage,
+      this.currentPage * this.questionsPerPage + this.questionsPerPage
+    );
   }
   downloadFile(id: string, fileName: string) {
     this.courseMaterialService.downloadFile(id).subscribe((data: Blob) => {

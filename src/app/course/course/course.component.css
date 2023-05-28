@@ -138,3 +138,7 @@ margin-right: 5px;
     background-color: maroon;
         color: white;
 }
+.next-btn{
+    margin-left: auto;
+    margin-right: 10px;
+}

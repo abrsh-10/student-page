@@ -190,7 +190,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12 mb-4" *ngFor="let exam of exams">
+          <div class="col-12 mb-4" *ngFor="let exam of examQuestions">
             <div class="card">
               <div class="card-body">
                 <div class="d-flex justify-content-between p-md-1">
@@ -216,7 +216,7 @@
                   <div class="align-self-center me-1">
                     <button
                       class="btn btn-outline-dark mb-0"
-                      (click)="toogleSideBarItems(6, undefined, exam)"
+                      (click)="toogleSideBarItems(6, undefined, exam.examId)"
                     >
                       Start Exam
                     </button>
@@ -282,42 +282,7 @@
         </div>
       </section>
       <section *ngIf="showQuestion">
-        <div class="row">
-          <div class="col-12 mt-3 mb-1">
-            <h5 class="text-uppercase">questions</h5>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 mb-3" *ngFor="let question of examQuestions">
-            <div class="card" *ngIf="question.questionType == 'True_False'">
-              <div class="card-body">
-                <div class="d-flex justify-content-between p-md-1">
-                  <div class="d-flex flex-column">
-                    <div>
-                      <p>
-                        <span>{{ question.questionNumber }}</span
-                        >.{{ question.question }}
-                      </p>
-                    </div>
-                    <div class="options">
-                      <label
-                        *ngFor="let option of question.options"
-                        style="margin-right: 20px"
-                      >
-                        <input
-                          type="radio"
-                          name="{{ question.id }}"
-                          [value]="option"
-                        />
-                        {{ option }}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <app-exam [examId]="examId"></app-exam>
       </section>
     </div>
   </div>
