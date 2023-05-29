@@ -142,3 +142,27 @@ margin-right: 5px;
     margin-left: auto;
     margin-right: 10px;
 }
+.timer{
+    position:sticky;
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 7px;
+    background-color: blue;
+    color: aliceblue;
+}
+.table-bordered.rounded {
+    border-radius: 10px;
+}
+
+.table td,
+.table th {
+    text-align: center;
+    color: aliceblue;
+}
+.table td{
+    background-color: red;
+    color: rgb(9, 0, 251);
+}

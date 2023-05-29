@@ -37,9 +37,10 @@ export class CourseComponent implements OnInit {
   assignments?: any;
   examQuestions?: any;
   questions?: any[];
-  examId?: String;
+  examId?: string;
   currentPage = 0;
   questionsPerPage = 4;
+  examDuration?: number;
 
   constructor(
     private router: Router,
@@ -63,7 +64,7 @@ export class CourseComponent implements OnInit {
   toogleSideBar() {
     this.showSideBar = !this.showSideBar;
   }
-  toogleSideBarItems(position: Number, topic?: Topic, examId?: String) {
+  toogleSideBarItems(position: Number, topic?: Topic, exam?: Exam) {
     if (position == 1) {
       this.showTopic = false;
       this.showLesson = false;
@@ -124,7 +125,8 @@ export class CourseComponent implements OnInit {
       this.showExam = false;
       this.showAssignment = false;
       this.showQuestion = true;
-      this.examId = examId;
+      this.examId = exam!.examId;
+      this.examDuration = exam!.duration * 60;
     }
   }
   nextPage() {

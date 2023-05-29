@@ -216,7 +216,7 @@
                   <div class="align-self-center me-1">
                     <button
                       class="btn btn-outline-dark mb-0"
-                      (click)="toogleSideBarItems(6, undefined, exam.examId)"
+                      (click)="toogleSideBarItems(6, undefined, exam)"
                     >
                       Start Exam
                     </button>
@@ -282,6 +282,46 @@
         </div>
       </section>
       <section *ngIf="showQuestion">
+        <div class="timer col-4">
+          <div class="h5 text-center">Time remaining</div>
+          <table class="table table-bordered rounded table-striped">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">hour</th>
+                <th scope="col">minute</th>
+                <th scope="col">second</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <cd-timer
+                    [countdown]="true"
+                    [startTime]="examDuration!"
+                    format="user"
+                    >[hours]</cd-timer
+                  >
+                </td>
+                <td>
+                  <cd-timer
+                    [countdown]="true"
+                    [startTime]="examDuration!"
+                    format="user"
+                    >[minutes]</cd-timer
+                  >
+                </td>
+                <td>
+                  <cd-timer
+                    [countdown]="true"
+                    [startTime]="examDuration!"
+                    format="user"
+                    >[seconds]</cd-timer
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <app-exam [examId]="examId"></app-exam>
       </section>
     </div>

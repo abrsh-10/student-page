@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { PopupComponent, PopupData } from './popup/popup.component';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  @Input() videoId?: String;
+  constructor() {}
 }

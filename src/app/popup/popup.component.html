@@ -1,0 +1,12 @@
+<div mat-dialog-content class="popup col-6">
+  <h4>{{ data.title }}</h4>
+  <p class="text-muted">{{ data.content }}</p>
+  <div class="buttons">
+    <button (click)="returnTrue()" class="positive btn btn-sm">
+      {{ data.positiveButton }}
+    </button>
+    <button (click)="returnFalse()" class="negative btn btn-sm">
+      {{ data.negativeButton }}
+    </button>
+  </div>
+</div>
