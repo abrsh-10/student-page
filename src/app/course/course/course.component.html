@@ -172,7 +172,10 @@
                     </div>
                   </div>
                   <div class="align-self-center me-1">
-                    <button class="btn btn-outline-dark mb-0">
+                    <button
+                      class="btn btn-outline-dark mb-0"
+                      (click)="activateVideo(lesson.lessonVideoId)"
+                    >
                       view lesson
                     </button>
                   </div>
@@ -181,6 +184,9 @@
             </div>
           </div>
         </div>
+      </section>
+      <section *ngIf="showVideo">
+        <app-video [videoId]="videoId!"></app-video>
       </section>
       <section *ngIf="showExam">
         <div class="row">

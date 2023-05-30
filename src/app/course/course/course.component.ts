@@ -28,6 +28,7 @@ export class CourseComponent implements OnInit {
   showExam = false;
   showAssignment = false;
   showQuestion? = false;
+  showVideo? = false;
   courseMaterials?: any;
   topics?: any;
   topicTitle?: string;
@@ -41,6 +42,7 @@ export class CourseComponent implements OnInit {
   currentPage = 0;
   questionsPerPage = 4;
   examDuration?: number;
+  videoId?: string;
 
   constructor(
     private router: Router,
@@ -71,6 +73,7 @@ export class CourseComponent implements OnInit {
       this.showExam = false;
       this.showAssignment = false;
       this.showQuestion = false;
+      this.showVideo = false;
       this.showCourseMaterial = !this.showCourseMaterial;
       this.courseMaterialService
         .getCourseMaterial(this.courseId)
@@ -83,6 +86,7 @@ export class CourseComponent implements OnInit {
       this.showExam = false;
       this.showAssignment = false;
       this.showQuestion = false;
+      this.showVideo = false;
       this.showTopic = !this.showTopic;
       this.topicService.getTopics(this.courseId).subscribe((data) => {
         this.topics = data;
@@ -92,6 +96,7 @@ export class CourseComponent implements OnInit {
       this.showExam = false;
       this.showAssignment = false;
       this.showQuestion = false;
+      this.showVideo = false;
       this.showLesson = true;
       this.topicTitle = topic?.topicTitle;
       this.topicDescription = topic?.topicDescription;
@@ -104,6 +109,7 @@ export class CourseComponent implements OnInit {
       this.showLesson = false;
       this.showAssignment = false;
       this.showQuestion = false;
+      this.showVideo = false;
       this.showExam = !this.showExam;
       this.examService.getExams(this.courseId).subscribe((data) => {
         this.examQuestions = data;
@@ -114,6 +120,7 @@ export class CourseComponent implements OnInit {
       this.showLesson = false;
       this.showExam = false;
       this.showQuestion = false;
+      this.showVideo = false;
       this.showAssignment = !this.showAssignment;
       this.assignmentService.getAssignments(this.courseId).subscribe((data) => {
         this.assignments = data;
@@ -124,28 +131,21 @@ export class CourseComponent implements OnInit {
       this.showLesson = false;
       this.showExam = false;
       this.showAssignment = false;
+      this.showVideo = false;
       this.showQuestion = true;
       this.examId = exam!.examId;
       this.examDuration = exam!.duration * 60;
     }
   }
-  nextPage() {
-    // Increment the current page
-    this.currentPage++;
-
-    // Check if there are more pages to display
-    if (this.currentPage > this.examQuestions.length) {
-      return;
-    }
-
-    // Load the questions for the current page
-    this.loadQuestions();
-  }
-  loadQuestions() {
-    this.questions = this.examQuestions.slice(
-      this.currentPage * this.questionsPerPage,
-      this.currentPage * this.questionsPerPage + this.questionsPerPage
-    );
+  activateVideo(videoId: string) {
+    this.showCourseMaterial = false;
+    this.showTopic = false;
+    this.showLesson = false;
+    this.showExam = false;
+    this.showAssignment = false;
+    this.showQuestion = false;
+    this.showVideo = true;
+    this.videoId = videoId;
   }
   downloadFile(id: string, fileName: string) {
     this.courseMaterialService.downloadFile(id).subscribe((data: Blob) => {
