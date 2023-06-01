@@ -26,7 +26,6 @@ export class DataService<T> {
 
     return forkJoin(requests);
   }
-
   add(url: string, item: T): Observable<T> {
     return this.http.post<T>(url, item);
   }

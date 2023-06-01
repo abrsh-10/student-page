@@ -2,7 +2,9 @@
   <div class="container-fluid">
     <a class="brand">
       <div class="home-logo col-md-2 col-sm-1" (click)="changeRoute('/')">
-        <button class="btn"><i class="fa fa-home"></i></button>
+        <button class="btn">
+          <i class="fa fa-home" style="color: #1da1f2"></i>
+        </button>
       </div>
       <h2 class="col-10 course-name">{{ course.courseName }}</h2>
     </a>
@@ -235,10 +237,16 @@
       </section>
       <section *ngIf="showAssignment">
         <div class="row">
-          <div class="col-12 mt-3 mb-1">
+          <div class="col-10 mt-3 mb-1">
             <h5 class="text-uppercase">Assignments</h5>
             <p>your assignments for this course are listed below</p>
           </div>
+          <button
+            class="btn btn-sm col-md-1 mb-sm-2 mb-md-auto uploadButton"
+            (click)="showUploadForm()"
+          >
+            upload Solution
+          </button>
         </div>
         <div class="row">
           <div class="col-12 mb-4" *ngFor="let assignment of assignments">

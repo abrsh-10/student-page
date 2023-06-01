@@ -1,11 +1,13 @@
 <app-navbar></app-navbar>
 <div class="content mt-4">
   <div class="container border">
-    <div class="h3 text-center">All Courses</div>
-    <div class="h5 text-center">
-      courses you take this semester are found here
+    <div class="heading">
+      <div class="h3 text-center slogan">All Courses</div>
+      <div class="h5 text-center">
+        Courses you take this semester are found here
+      </div>
+      <hr />
     </div>
-    <hr />
     <div class="row">
       <div
         *ngFor="let course of courses"

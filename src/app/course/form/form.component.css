@@ -1,0 +1,30 @@
+.popup {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    height: fit-content;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: lightgray;
+    color: black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+input{
+    border-radius: 5px;
+    width:80%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.assignment{
+    width: 50%;
+}
+.buttons {
+    align-self: flex-end;
+    margin-top: 12px;
+}
+.positive{
+    background-color: #1da1f2;
+}

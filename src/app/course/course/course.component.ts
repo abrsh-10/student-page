@@ -1,15 +1,7 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../services/course.service';
 import { Course } from '../../models/course';
-import { CourseMaterial } from '../../models/course-material';
 import { CourseMaterialService } from '../services/course-material.service';
 import { TopicService } from '../services/topic.service';
 import { LessonService } from '../services/lesson.service';
@@ -18,6 +10,9 @@ import { ExamService } from '../services/exam.service';
 import { DatePipe } from '@angular/common';
 import { AssignmentService } from '../services/assignment.service';
 import { Exam } from '../../models/exam';
+import { FormComponent, FormData } from 'src/app/course/form/form.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AssignmentSolutionService } from '../services/assignment-solution.service';
 
 @Component({
   selector: 'app-course',
@@ -25,7 +20,7 @@ import { Exam } from '../../models/exam';
   styleUrls: ['./course.component.css'],
   providers: [DatePipe],
 })
-export class CourseComponent implements OnInit, AfterViewInit {
+export class CourseComponent implements OnInit {
   showSideBar = true;
   courseId: any;
   course!: Course;
@@ -62,7 +57,9 @@ export class CourseComponent implements OnInit, AfterViewInit {
     private topicService: TopicService,
     private lessonService: LessonService,
     private examService: ExamService,
-    private assignmentService: AssignmentService
+    private assignmentService: AssignmentService,
+    private assignmentSolutionService: AssignmentSolutionService,
+    private dialog: MatDialog
   ) {}
   ngOnInit(): void {
     this.courseId = this.route.snapshot.paramMap.get('id');
@@ -75,7 +72,6 @@ export class CourseComponent implements OnInit, AfterViewInit {
         });
     });
   }
-  ngAfterViewInit() {}
   changeRoute(route: string) {
     this.router.navigate([route]);
   }
@@ -163,6 +159,34 @@ export class CourseComponent implements OnInit, AfterViewInit {
     this.showQuestion = false;
     this.showVideo = true;
     this.videoId = videoId;
+  }
+  showUploadForm() {
+    const data: FormData = {
+      title: 'Upload Solution Form',
+      assignments: this.assignments,
+      fileIncluded: true,
+      positiveButton: 'Upload',
+      negativeButton: 'Cancel',
+    };
+    const dialogRef = this.dialog.open(FormComponent, { data });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.assignmentSolutionService.postExamSolution(result).subscribe(
+          (result) => {
+            // handle the successful response
+            console.log('Exam solution submitted successfully:', result);
+          },
+          (error) => {
+            // handle the error response
+            console.error('Failed to submit exam solution:', error);
+          }
+        );
+      } else {
+        console.log('Dialog was closed');
+
+        return;
+      }
+    });
   }
   downloadFile(id: string, fileName: string) {
     this.courseMaterialService.downloadFile(id).subscribe((data: Blob) => {
