@@ -6,7 +6,6 @@ import { CoursesComponent } from './courses/courses.component';
 import { CourseComponent } from './course/course.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { ExamComponent } from './exam/exam.component';
-import { TimerComponent } from './timer/timer.component';
 import { VideoComponent } from './video/video.component';
 @NgModule({
   declarations: [
@@ -14,7 +13,6 @@ import { VideoComponent } from './video/video.component';
     NavbarComponent,
     CourseComponent,
     ExamComponent,
-    TimerComponent,
     VideoComponent,
   ],
   imports: [CommonModule, CourseRoutingModule, CdTimerModule],

@@ -14,6 +14,9 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ExamComponent implements OnInit {
   @Input() examId?: string;
+  @Input() examDuration?: any;
+  fullScreenMode: boolean = false;
+  contentDiv!: any;
   examQuestions!: any;
   questions?: any[];
   currentPage!: number;
@@ -26,6 +29,14 @@ export class ExamComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const myElement = document.getElementById('fullscreen');
+    if (myElement) {
+      this.contentDiv = myElement;
+      this.enterFullScreen(this.contentDiv);
+    } else {
+      // The element does not exist in the view
+      console.log('Element not found');
+    }
     this.currentPage = 1;
     this.examService.getQuestions(this.examId!).subscribe((data) => {
       this.examQuestions = data;
@@ -74,6 +85,7 @@ export class ExamComponent implements OnInit {
     this.answers.push(newAnswer);
   }
   onSubmit(): void {
+    this.exitFullScreen();
     const data: PopupData = {
       title: 'Submit Exam Solution',
       content: 'are you sure you have entered all answers for the exam',
@@ -103,5 +115,34 @@ export class ExamComponent implements OnInit {
         return;
       }
     });
+  }
+  enterFullScreen(element: HTMLElement): void {
+    this.fullScreenMode = true;
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+    } else if ((element as any).mozRequestFullScreen) {
+      (element as any).mozRequestFullScreen();
+    } else if ((element as any).webkitRequestFullscreen) {
+      (element as any).webkitRequestFullscreen();
+    } else if ((element as any).msRequestFullscreen) {
+      (element as any).msRequestFullscreen();
+    }
+    // Set background color to white
+    element.style.backgroundColor = '#e0dbdbe3';
+
+    // Add scrolling to the full screen
+    element.style.overflow = 'auto';
+  }
+
+  private exitFullScreen(): void {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if ((document as any).mozCancelFullScreen) {
+      (document as any).mozCancelFullScreen();
+    } else if ((document as any).webkitExitFullscreen) {
+      (document as any).webkitExitFullscreen();
+    } else if ((document as any).msExitFullscreen) {
+      (document as any).msExitFullscreen();
+    }
   }
 }

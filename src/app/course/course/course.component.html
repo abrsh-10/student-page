@@ -2,14 +2,9 @@
   <div class="container-fluid">
     <a class="brand">
       <div class="home-logo col-md-2 col-sm-1" (click)="changeRoute('/')">
-        <img
-          src="assets/images/home-button.png"
-          alt="home logo"
-          width="30"
-          height="24"
-        />
+        <button class="btn"><i class="fa fa-home"></i></button>
       </div>
-      <h2 class="col-10">{{ course.courseName }}</h2>
+      <h2 class="col-10 course-name">{{ course.courseName }}</h2>
     </a>
     <div class="right-side d-none d-lg-flex">
       <div>
@@ -52,7 +47,7 @@
           *ngFor="let topic of topics"
           (click)="toogleSideBarItems(3, topic)"
         >
-          <span class="bullet">&#8226;</span> &nbsp;{{ topic.topicTitle }}
+          {{ topic.topicTitle }}
         </div>
       </div>
       <div
@@ -121,7 +116,9 @@
                       </p>
                     </div>
                   </div>
-                  <div class="align-self-center me-1">
+                  <div
+                    class="align-self-center me-1 d-flex flex-direction-column"
+                  >
                     <button
                       class="btn btn-outline-dark mb-0"
                       (click)="
@@ -186,7 +183,10 @@
         </div>
       </section>
       <section *ngIf="showVideo">
-        <app-video [videoId]="videoId!"></app-video>
+        <div class="youtube">
+          <div class="h3"></div>
+          <app-video [videoId]="videoId!"></app-video>
+        </div>
       </section>
       <section *ngIf="showExam">
         <div class="row">
@@ -288,47 +288,10 @@
         </div>
       </section>
       <section *ngIf="showQuestion">
-        <div class="timer col-4">
-          <div class="h5 text-center">Time remaining</div>
-          <table class="table table-bordered rounded table-striped">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">hour</th>
-                <th scope="col">minute</th>
-                <th scope="col">second</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <cd-timer
-                    [countdown]="true"
-                    [startTime]="examDuration!"
-                    format="user"
-                    >[hours]</cd-timer
-                  >
-                </td>
-                <td>
-                  <cd-timer
-                    [countdown]="true"
-                    [startTime]="examDuration!"
-                    format="user"
-                    >[minutes]</cd-timer
-                  >
-                </td>
-                <td>
-                  <cd-timer
-                    [countdown]="true"
-                    [startTime]="examDuration!"
-                    format="user"
-                    >[seconds]</cd-timer
-                  >
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <app-exam [examId]="examId"></app-exam>
+        <app-exam [examId]="examId" [examDuration]="examDuration"></app-exam>
+        <!-- <ng-template #notActive>
+          <div class="h3">exam is not yet active or either have passed</div>
+        </ng-template> -->
       </section>
     </div>
   </div>

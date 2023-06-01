@@ -1,4 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../services/course.service';
 import { Course } from '../../models/course';
@@ -18,11 +25,11 @@ import { Exam } from '../../models/exam';
   styleUrls: ['./course.component.css'],
   providers: [DatePipe],
 })
-export class CourseComponent implements OnInit {
+export class CourseComponent implements OnInit, AfterViewInit {
   showSideBar = true;
   courseId: any;
   course!: Course;
-  showCourseMaterial = false;
+  showCourseMaterial = true;
   showTopic = false;
   showLesson = false;
   showExam = false;
@@ -37,11 +44,14 @@ export class CourseComponent implements OnInit {
   exams?: any;
   assignments?: any;
   examQuestions?: any;
+
   questions?: any[];
   examId?: string;
+  examDuration?: number;
+  examActiveStatus?: boolean;
   currentPage = 0;
   questionsPerPage = 4;
-  examDuration?: number;
+
   videoId?: string;
 
   constructor(
@@ -58,8 +68,14 @@ export class CourseComponent implements OnInit {
     this.courseId = this.route.snapshot.paramMap.get('id');
     this.courseService.getCourse(this.courseId).subscribe((data) => {
       this.course = data;
+      this.courseMaterialService
+        .getCourseMaterial(this.courseId)
+        .subscribe((data) => {
+          this.courseMaterials = data;
+        });
     });
   }
+  ngAfterViewInit() {}
   changeRoute(route: string) {
     this.router.navigate([route]);
   }
@@ -134,6 +150,7 @@ export class CourseComponent implements OnInit {
       this.showVideo = false;
       this.showQuestion = true;
       this.examId = exam!.examId;
+      this.examActiveStatus = exam!.active;
       this.examDuration = exam!.duration * 60;
     }
   }

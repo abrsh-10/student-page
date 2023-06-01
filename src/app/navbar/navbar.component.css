@@ -1,7 +1,6 @@
 .navigationBar{
-    background-color: maroon;
+    background-color: #0077b6;
     color: white;
-    padding-bottom: 40px;
 }
 a{
     color: white;
@@ -19,9 +18,10 @@ ul{
     margin-left: 5px;
 }
 .aau-logo{
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     margin-right: 10px;
+    margin-top: 5px;
 }
 .slogan{
     display: flex;
@@ -29,9 +29,8 @@ ul{
 }
 .main{
     color: white;
-    font-size: xx-large;
 }
 .secondary {
-    color: black;
+    color: rgb(252, 218, 218);
     font-size:large;
 }

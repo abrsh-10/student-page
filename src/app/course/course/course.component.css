@@ -1,5 +1,6 @@
 .navbar{
     padding: 0px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.19);
 }
 .brand{
     display: flex;
@@ -10,12 +11,13 @@
     color: black;
 }
 .home-logo{
-    width: 130px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     display: flex;
     place-items: center;
     justify-content: center;
     background-color: rgb(234, 231, 231);
+    color: #1DA1F2;
     text-decoration: none;
 }
 .brand>h2{
@@ -48,6 +50,9 @@
 .main>span{
     font-weight: 600;
 }
+.course-name{
+    color: #1DA1F2;
+}
 .side-bar{
     padding: 0px;
     background-color: white;
@@ -67,7 +72,7 @@
     position: relative;
 }
 .side-bar-items{
-    background-color: maroon;
+    background-color: #1DA1F2;
     color: white;
     display: flex;
     place-items: center;
@@ -80,7 +85,7 @@
     cursor: pointer;
 }
 .side-bar-item-clicked{
-            background-color: brown;
+            background-color: #055688;
             color: white;
             display: flex;
             place-items: center;
@@ -91,10 +96,9 @@
             margin-bottom: 1.5px;
             padding-left: 15px;
             cursor: pointer;
-            text-decoration: underline;
 }
 .side-bar-sub-items{
-        background-color: rgb(128, 81, 0);
+        background-color: #89cdf8;
         color: white;
         display: flex;
         place-items: center;
@@ -108,7 +112,7 @@
         cursor: pointer;
 }
 .showSideBar-Icon{
-    background-color: maroon;
+    background-color: #1DA1F2;
     margin-top: 20px;
     margin-right: auto;
     width:50px;
@@ -120,10 +124,12 @@
     cursor: pointer;
 }
 .main-content{
-    background-color: rgb(245, 225, 225);
+    background-color: white;
+    color: black;
     height: 100vh;
     margin-top: 20px;
     margin-right: auto;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .truncate {
     max-width: 500px;
@@ -142,27 +148,7 @@ margin-right: 5px;
     margin-left: auto;
     margin-right: 10px;
 }
-.timer{
-    position:sticky;
-    margin-left: auto;
+.youtube{
     display: flex;
     flex-direction: column;
-    border: 1px solid;
-    border-radius: 5px;
-    padding: 7px;
-    background-color: blue;
-    color: aliceblue;
-}
-.table-bordered.rounded {
-    border-radius: 10px;
-}
-
-.table td,
-.table th {
-    text-align: center;
-    color: aliceblue;
-}
-.table td{
-    background-color: red;
-    color: rgb(9, 0, 251);
 }

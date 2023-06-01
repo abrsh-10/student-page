@@ -1,125 +1,179 @@
-<div *ngIf="currentPage == 1">
-  <h4>True or false questions</h4>
-  <div *ngFor="let question of questions; let i = index">
-    <ng-container *ngIf="question.questionType === 'True_False'">
-      <!-- Render a true/false question -->
-      <div class="question p-2 m-4">
-        <h5>{{ i + 1 + ". " + question.question }}</h5>
-        <div class="form-check" *ngFor="let choice of question.options">
-          <input
-            class="form-check-input"
-            type="radio"
-            [name]="question.questionNumber"
-            [value]="choice"
-            (change)="
-              saveAnswer(question.questionType, question.questionNumber, choice)
-            "
-          />
-          <label class="form-check-label" for="{{ choice }}">
-            {{ choice }}
-          </label>
-        </div>
+<div>
+  <button
+    class="btn btn-sm btn-outline-primary"
+    (click)="enterFullScreen(contentDiv)"
+  >
+    Full screen
+  </button>
+  <div class="container" id="fullscreen">
+    <div class="timer col-4">
+      <div class="h5 text-center">Time remaining</div>
+      <table class="table">
+        <thead class="thead">
+          <tr>
+            <th scope="col">Hours</th>
+            <th scope="col">Minutes</th>
+            <th scope="col">Seconds</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <cd-timer
+                [countdown]="true"
+                [startTime]="examDuration!"
+                format="user"
+                >[hours]</cd-timer
+              >
+            </td>
+            <td>
+              <cd-timer
+                [countdown]="true"
+                [startTime]="examDuration!"
+                format="user"
+                >[minutes]</cd-timer
+              >
+            </td>
+            <td>
+              <cd-timer
+                [countdown]="true"
+                [startTime]="examDuration!"
+                format="user"
+                >[seconds]</cd-timer
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="currentPage == 1">
+      <h4>True or false questions</h4>
+      <div *ngFor="let question of questions; let i = index">
+        <ng-container *ngIf="question.questionType === 'True_False'">
+          <!-- Render a true/false question -->
+          <div class="question p-2 m-4">
+            <h5>{{ i + 1 + ". " + question.question }}</h5>
+            <div class="form-check" *ngFor="let choice of question.options">
+              <input
+                class="form-check-input"
+                type="radio"
+                [name]="question.questionNumber"
+                [value]="choice"
+                (change)="
+                  saveAnswer(
+                    question.questionType,
+                    question.questionNumber,
+                    choice
+                  )
+                "
+              />
+              <label class="form-check-label" for="{{ choice }}">
+                {{ choice }}
+              </label>
+            </div>
+          </div>
+        </ng-container>
       </div>
-    </ng-container>
-  </div>
-  <div class="d-flex justify-content-end m-3">
-    <button type="button" class="btn btn-primary" (click)="nextPage()">
-      > Next Page
-    </button>
-  </div>
-</div>
-<div *ngIf="currentPage == 2">
-  <h4>Multiple choice questions</h4>
-  <div *ngFor="let question of questions; let i = index">
-    <ng-container *ngIf="question.questionType === 'Choose'">
-      <!-- Render a true/false question -->
-      <div class="question p-2 m-4">
-        <h5>{{ i + 1 + ". " + question.question }}</h5>
-        <div
-          class="form-check"
-          *ngFor="let choice of question.options; let i = index"
-        >
-          <input
-            class="form-check-input"
-            type="radio"
-            [name]="question.questionNumber"
-            [value]="choice"
-            id="{{ question.questionNumber }}-{{ i }}"
-            (change)="
-              saveAnswer(
-                question.questionType,
-                question.questionNumber,
-                getLetter(i) + '. ' + choice
-              )
-            "
-          />
-          <label
-            class="form-check-label"
-            for="{{ question.questionNumber }}-{{ i }}"
-          >
-            {{ getLetter(i) }}. {{ choice }}
-          </label>
-        </div>
+      <div class="d-flex justify-content-end m-3">
+        <button type="button" class="btn btn-primary" (click)="nextPage()">
+          > Next Page
+        </button>
       </div>
-    </ng-container>
-  </div>
-  <div class="d-flex justify-content-end m-3">
-    <button type="button" class="btn btn-primary" (click)="nextPage()">
-      > Next Page
-    </button>
-  </div>
-</div>
-<div *ngIf="currentPage == 3">
-  <h4>Fill in the blank</h4>
-  <div *ngFor="let question of questions; let i = index">
-    <ng-container *ngIf="question.questionType === 'Fill'">
-      <!-- Render a true/false question -->
-      <div class="question p-2 m-4">
-        <h5>{{ i + 1 + ". " + question.question }}</h5>
-        <input
-          type="text"
-          #fill
-          (change)="
-            saveAnswer(
-              question.questionType,
-              question.questionNumber,
-              fill.value
-            )
-          "
-        />
+    </div>
+    <div *ngIf="currentPage == 2">
+      <h4>Multiple choice questions</h4>
+      <div *ngFor="let question of questions; let i = index">
+        <ng-container *ngIf="question.questionType === 'Choose'">
+          <!-- Render a true/false question -->
+          <div class="question p-2 m-4">
+            <h5>{{ i + 1 + ". " + question.question }}</h5>
+            <div
+              class="form-check"
+              *ngFor="let choice of question.options; let i = index"
+            >
+              <input
+                class="form-check-input"
+                type="radio"
+                [name]="question.questionNumber"
+                [value]="choice"
+                id="{{ question.questionNumber }}-{{ i }}"
+                (change)="
+                  saveAnswer(
+                    question.questionType,
+                    question.questionNumber,
+                    getLetter(i) + '. ' + choice
+                  )
+                "
+              />
+              <label
+                class="form-check-label"
+                for="{{ question.questionNumber }}-{{ i }}"
+              >
+                {{ getLetter(i) }}. {{ choice }}
+              </label>
+            </div>
+          </div>
+        </ng-container>
       </div>
-    </ng-container>
-  </div>
-  <div class="d-flex justify-content-end m-3">
-    <button type="button" class="btn btn-primary" (click)="nextPage()">
-      > Next Page
-    </button>
-  </div>
-</div>
-<div *ngIf="currentPage == 4">
-  <h4>Short Answer questions</h4>
-  <div *ngFor="let question of questions; let i = index">
-    <ng-container *ngIf="question.questionType === 'Short_Answer'">
-      <!-- Render a true/false question -->
-      <div class="question p-2 m-4">
-        <h5>{{ i + 1 + ". " + question.question }}</h5>
-        <textarea
-          #fill
-          (change)="
-            saveAnswer(
-              question.questionType,
-              question.questionNumber,
-              fill.value
-            )
-          "
-          style="width: 70%"
-        ></textarea>
+      <div class="d-flex justify-content-end m-3">
+        <button type="button" class="btn btn-primary" (click)="nextPage()">
+          > Next Page
+        </button>
       </div>
-    </ng-container>
-  </div>
-  <div class="d-flex justify-content-end m-3">
-    <button type="button" class="btn btn-primary" (click)="onSubmit()">
-      submit
-    </button>
+    </div>
+    <div *ngIf="currentPage == 3">
+      <h4>Fill in the blank</h4>
+      <div *ngFor="let question of questions; let i = index">
+        <ng-container *ngIf="question.questionType === 'Fill'">
+          <!-- Render a true/false question -->
+          <div class="question p-2 m-4">
+            <h5>{{ i + 1 + ". " + question.question }}</h5>
+            <input
+              type="text"
+              #fill
+              (change)="
+                saveAnswer(
+                  question.questionType,
+                  question.questionNumber,
+                  fill.value
+                )
+              "
+            />
+          </div>
+        </ng-container>
+      </div>
+      <div class="d-flex justify-content-end m-3">
+        <button type="button" class="btn btn-primary" (click)="nextPage()">
+          > Next Page
+        </button>
+      </div>
+    </div>
+    <div *ngIf="currentPage == 4">
+      <h4>Short Answer questions</h4>
+      <div *ngFor="let question of questions; let i = index">
+        <ng-container *ngIf="question.questionType === 'Short_Answer'">
+          <!-- Render a true/false question -->
+          <div class="question p-2 m-4">
+            <h5>{{ i + 1 + ". " + question.question }}</h5>
+            <textarea
+              #fill
+              (change)="
+                saveAnswer(
+                  question.questionType,
+                  question.questionNumber,
+                  fill.value
+                )
+              "
+              style="width: 70%"
+            ></textarea>
+          </div>
+        </ng-container>
+      </div>
+      <div class="d-flex justify-content-end m-3">
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">
+          submit
+        </button>
+      </div>
+    </div>
   </div>
 </div>
