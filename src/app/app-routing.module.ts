@@ -7,7 +7,7 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/home' },
   { path: 'error', pathMatch: 'full', component: ErrorComponent },
   {
-    path: 'courses',
+    path: 'courses/:email',
     loadChildren: () =>
       import('./course/course.module').then((m) => m.CourseModule),
   },

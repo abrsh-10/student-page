@@ -98,7 +98,7 @@ export class ExamComponent implements OnInit {
         const examSolution: ExamSolution = new ExamSolution(
           this.answers,
           this.examId!,
-          'abrhamsisay33@gmail.com'
+          sessionStorage.getItem('email')!
         ); // create an instance of ExamSolution
         this.examSolutionService.postExamSolution(examSolution).subscribe(
           (result) => {

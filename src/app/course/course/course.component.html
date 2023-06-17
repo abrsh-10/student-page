@@ -2,7 +2,10 @@
   <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
       <a class="brand">
-        <div class="home-logo col-md-2 col-sm-1" (click)="changeRoute('/')">
+        <div
+          class="home-logo col-md-2 col-sm-1"
+          (click)="changeRoute('/courses/all')"
+        >
           <i class="fa fa-home" style="color: #1da1f2"></i>
         </div>
         <h2 class="col-10 course-name">{{ course.courseName }}</h2>

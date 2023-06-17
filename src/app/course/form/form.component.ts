@@ -32,7 +32,7 @@ export class FormComponent {
   returnTrue(): void {
     this.assignmentSolution = new AssignmentSolution(
       this.selectedFile!,
-      'abrhamsisay33@gmail.com',
+      sessionStorage.getItem('email')!,
       this.description!,
       this.assignmentId!
     );

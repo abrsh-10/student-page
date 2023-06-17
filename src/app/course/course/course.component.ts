@@ -68,6 +68,7 @@ export class CourseComponent implements OnInit {
   ngOnInit(): void {
     this.courseId = this.route.snapshot.paramMap.get('id');
     this.email = sessionStorage.getItem('email')!;
+    console.log(this.email);
     this.courseService.getCourse(this.courseId).subscribe((data) => {
       this.course = data;
     });
@@ -213,7 +214,7 @@ export class CourseComponent implements OnInit {
   }
   viewSolution(assignment: any) {
     this.assignmentSolutionService
-      .getAssignmentSolution('abrhamsisay33@gmail.com')
+      .getAssignmentSolution(this.email)
       .subscribe((data) => {
         let solution: any;
         data.forEach((item) => {
