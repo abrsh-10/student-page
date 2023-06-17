@@ -13,6 +13,9 @@ import { Exam } from '../../models/exam';
 import { FormComponent, FormData } from 'src/app/course/form/form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AssignmentSolutionService } from '../services/assignment-solution.service';
+import { AssignmentSolution } from 'src/app/models/assignment-solution';
+import { PopupComponent, PopupData } from 'src/app/popup/popup.component';
+import { Assignments } from 'src/app/models/assignments';
 
 @Component({
   selector: 'app-course',
@@ -22,8 +25,9 @@ import { AssignmentSolutionService } from '../services/assignment-solution.servi
 })
 export class CourseComponent implements OnInit {
   showSideBar = true;
+  email!: string;
   courseId: any;
-  course!: Course;
+  course: Course = new Course();
   showCourseMaterial = true;
   showTopic = false;
   showLesson = false;
@@ -63,14 +67,15 @@ export class CourseComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.courseId = this.route.snapshot.paramMap.get('id');
+    this.email = sessionStorage.getItem('email')!;
     this.courseService.getCourse(this.courseId).subscribe((data) => {
       this.course = data;
-      this.courseMaterialService
-        .getCourseMaterial(this.courseId)
-        .subscribe((data) => {
-          this.courseMaterials = data;
-        });
     });
+    this.courseMaterialService
+      .getCourseMaterial(this.courseId)
+      .subscribe((data) => {
+        this.courseMaterials = data;
+      });
   }
   changeRoute(route: string) {
     this.router.navigate([route]);
@@ -160,10 +165,10 @@ export class CourseComponent implements OnInit {
     this.showVideo = true;
     this.videoId = videoId;
   }
-  showUploadForm() {
+  showUploadForm(assignment?: any) {
     const data: FormData = {
       title: 'Upload Solution Form',
-      assignments: this.assignments,
+      assignments: assignment || this.assignments,
       fileIncluded: true,
       positiveButton: 'Upload',
       negativeButton: 'Cancel',
@@ -171,22 +176,107 @@ export class CourseComponent implements OnInit {
     const dialogRef = this.dialog.open(FormComponent, { data });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.assignmentSolutionService.postExamSolution(result).subscribe(
-          (result) => {
-            // handle the successful response
-            console.log('Exam solution submitted successfully:', result);
-          },
-          (error) => {
-            // handle the error response
-            console.error('Failed to submit exam solution:', error);
-          }
-        );
+        this.assignmentSolutionService
+          .getAssignmentSolution('abrhamsisay33@gmail.com')
+          .subscribe((data) => {
+            for (let solution of data) {
+              if (solution.assignmentId == result.assignmentId) {
+                const data: PopupData = {
+                  title: 'Error',
+                  content: [
+                    'assignment solution already exists for this assignment',
+                  ],
+                  positiveButton: 'close',
+                };
+                const dialogRef = this.dialog.open(PopupComponent, { data });
+                return;
+              }
+            }
+            this.assignmentSolutionService
+              .postAssignmentSolution(result)
+              .subscribe(
+                (result) => {
+                  // handle the successful response
+                  console.log('Exam solution submitted successfully:', result);
+                },
+                (error) => {
+                  // handle the error response
+                  console.error('Failed to submit exam solution:', error);
+                }
+              );
+          });
       } else {
         console.log('Dialog was closed');
-
         return;
       }
     });
+  }
+  viewSolution(assignment: any) {
+    this.assignmentSolutionService
+      .getAssignmentSolution('abrhamsisay33@gmail.com')
+      .subscribe((data) => {
+        let solution: any;
+        data.forEach((item) => {
+          if (item.assignmentId == assignment.assignmentId) {
+            solution = item;
+          }
+        });
+        if (solution) {
+          const data: PopupData = {
+            title: 'Assignment Solution',
+            content: [
+              'Solution Name: ' + solution.assignmentSolutionName,
+              'Solution Size: ' +
+                this.bytesToMegabytes(solution.assignmentSolutionSize, 2) +
+                'MB',
+              'Solution description: ' + solution.assignmentSolutionDescription,
+            ],
+            positiveButton: 'close',
+            negativeButton: 'delete',
+          };
+          const dialogRef = this.dialog.open(PopupComponent, { data });
+          dialogRef.afterClosed().subscribe((result) => {
+            if (!result) {
+              const data: PopupData = {
+                title: 'Delte Assignment Solution',
+                content: ['Are you sure to delete the assignment solution'],
+                positiveButton: 'Yes',
+                negativeButton: 'No',
+              };
+              const dialogRef = this.dialog.open(PopupComponent, { data });
+              dialogRef.afterClosed().subscribe((result) => {
+                if (result) {
+                  this.assignmentSolutionService
+                    .deleteAssignmentSolution(solution.assignmentSolutionId)
+                    .subscribe();
+                } else {
+                  console.log('Dialog was closed');
+                  return;
+                }
+              });
+            } else {
+              console.log('Dialog was closed');
+              return;
+            }
+          });
+        } else {
+          const data: PopupData = {
+            title: 'Assignment Solution',
+            content: ['you have not added any solution to this assignment yet'],
+            positiveButton: 'upload',
+            negativeButton: 'close',
+          };
+          const dialogRef = this.dialog.open(PopupComponent, { data });
+          dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+              this.showUploadForm([assignment]);
+            } else {
+              console.log('Dialog was closed');
+              return;
+            }
+          });
+        }
+      });
   }
   downloadFile(id: string, fileName: string) {
     this.courseMaterialService.downloadFile(id).subscribe((data: Blob) => {
@@ -196,5 +286,35 @@ export class CourseComponent implements OnInit {
       link.download = fileName;
       link.click();
     });
+  }
+  bytesToMegabytes(bytes: number, decimalPlaces: number): number {
+    const megabytes = bytes / (1024 * 1024);
+    const factor = Math.pow(10, decimalPlaces);
+    return Math.floor(megabytes * factor) / factor;
+  }
+  formatDate(dateString: string): string {
+    const dateTimeParts = dateString.split('T');
+    const dateParts = dateTimeParts[0].split('-');
+    const timeParts = dateTimeParts[1].split(':');
+    const year = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]) - 1; // JavaScript months are 0-indexed
+    const day = parseInt(dateParts[2]);
+    const hours = parseInt(timeParts[0]);
+    const minutes = parseInt(timeParts[1]);
+
+    const date = new Date(year, month, day, hours, minutes);
+    const monthName = date.toLocaleString('default', { month: 'short' });
+    const formattedDate = `${monthName} ${date.getDate()} ${date.getFullYear()} @ ${date.getHours()}:${this.formatMinutes(
+      date.getMinutes()
+    )}`;
+
+    return formattedDate;
+  }
+
+  formatMinutes(minutes: number): string {
+    if (minutes < 10) {
+      return `0${minutes}`;
+    }
+    return minutes.toString();
   }
 }
