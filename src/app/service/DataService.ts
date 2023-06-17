@@ -7,11 +7,12 @@ import { Observable, forkJoin } from 'rxjs';
 })
 export class DataService<T> {
   constructor(private http: HttpClient) {}
-
+  get(url: string): Observable<any> {
+    return this.http.get<any>(url);
+  }
   getAll(url: string): Observable<T[]> {
     return this.http.get<T[]>(url);
   }
-
   getById(url: string, id: String): Observable<T> {
     const apiUrl = `${url}/${id}`;
     return this.http.get<T>(apiUrl);

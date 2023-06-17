@@ -88,9 +88,9 @@ export class ExamComponent implements OnInit {
     this.exitFullScreen();
     const data: PopupData = {
       title: 'Submit Exam Solution',
-      content: 'are you sure you have entered all answers for the exam',
-      positiveButton: 'yes',
-      negativeButton: 'no',
+      content: ['are you sure you have entered all answers for the exam'],
+      positiveButton: 'Yes',
+      negativeButton: 'No',
     };
     const dialogRef = this.dialog.open(PopupComponent, { data });
     dialogRef.afterClosed().subscribe((result) => {

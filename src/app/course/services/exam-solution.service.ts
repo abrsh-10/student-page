@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { ExamSolution } from 'src/app/models/exam-solution';
 import { DataService } from 'src/app/service/DataService';
 
+import { environment } from 'src/environments/environment';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -13,7 +15,7 @@ export class ExamSolutionService extends DataService<ExamSolution> {
   }
 
   protected getUrl(): string {
-    return 'http://localhost:8085/api/exam-solution';
+    return environment.examSolutionApiUrl;
   }
   postExamSolution(examSolution: ExamSolution): Observable<ExamSolution> {
     const url = `${this.getUrl()}`;

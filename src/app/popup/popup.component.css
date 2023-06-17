@@ -16,3 +16,13 @@
 .buttons{
     align-self: flex-end;
 }
+.positive{
+    margin-right: 10px;
+}
+.negative{
+    background-color: red;
+}
+.negative:hover {
+    background-color: white;
+    color: red;
+}

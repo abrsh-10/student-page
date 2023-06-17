@@ -7,4 +7,5 @@ export class User {
   email!: String;
   role!: Role;
   isAllowed!: Boolean;
+  courses?: string[];
 }

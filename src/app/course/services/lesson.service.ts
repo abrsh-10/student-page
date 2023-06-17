@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { DataService } from 'src/app/service/DataService';
 import { Observable } from 'rxjs';
 
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
@@ -13,7 +14,7 @@ export class LessonService extends DataService<Lesson> {
   }
 
   protected getUrl(): string {
-    return 'http://localhost:8083/api/lessons';
+    return environment.lessonApiUrl;
   }
   getLessons(id: any): Observable<Lesson> {
     const url = `${this.getUrl()}/topic-id`;

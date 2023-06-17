@@ -10,6 +10,7 @@
   },
   "private": true,
   "dependencies": {
+    "@abacritt/angularx-social-login": "^2.1.0",
     "@angular/animations": "^15.2.0",
     "@angular/cdk": "~15.2.9",
     "@angular/common": "^15.2.0",
@@ -26,6 +27,8 @@
     "@popperjs/core": "^2.11.7",
     "angular-cd-timer": "^3.0.0",
     "bootstrap": "^5.2.3",
+    "google-auth-library": "^8.8.0",
+    "ngx-cookie-service": "^16.0.0",
     "ngx-youtube-player": "^11.0.0",
     "ngx-youtube-player-plus": "^7.0.0",
     "rxjs": "~7.8.0",

@@ -1,11 +1,19 @@
 <div mat-dialog-content class="popup col-6">
   <h4>{{ data.title }}</h4>
-  <p class="text-muted">{{ data.content }}</p>
+  <p class="text-muted" *ngFor="let content of data.content">{{ content }}</p>
   <div class="buttons">
-    <button (click)="returnTrue()" class="positive btn btn-sm">
+    <button
+      (click)="returnTrue()"
+      class="positive btn btn-sm"
+      *ngIf="data.positiveButton"
+    >
       {{ data.positiveButton }}
     </button>
-    <button (click)="returnFalse()" class="negative btn btn-sm">
+    <button
+      (click)="returnFalse()"
+      class="negative btn btn-sm"
+      *ngIf="data.negativeButton"
+    >
       {{ data.negativeButton }}
     </button>
   </div>

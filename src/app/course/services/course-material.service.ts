@@ -3,6 +3,7 @@ import { DataService } from '../../service/DataService';
 import { CourseMaterial } from '../../models/course-material';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class CourseMaterialService extends DataService<CourseMaterial> {
   }
 
   protected getUrl(): string {
-    return 'http://localhost:8083/api/course-material';
+    return environment.courseMaterialApiUrl;
   }
 
   getCourseMaterial(id: string): Observable<CourseMaterial> {

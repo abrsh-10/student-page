@@ -1,52 +1,63 @@
 <div mat-dialog-content class="popup col-6">
   <h4>{{ data.title }}</h4>
-  <div class="form-control">
-    <div class="mb-2">
-      <label><b>select a file</b></label>
+  <form #myForm="ngForm">
+    <div class="form-control">
+      <div class="mb-2">
+        <label><b>Select a file</b></label>
+      </div>
+      <input
+        type="file"
+        name="file"
+        id="file"
+        (change)="onFileSelected($event)"
+        required
+      />
     </div>
-    <input
-      type="file"
-      name="file"
-      id="file"
-      (change)="onFileSelected($event)"
-    />
-  </div>
-  <div class="form-control">
-    <div class="mb-2">
-      <label><b>Description</b></label>
+    <div class="form-control">
+      <div class="mb-2">
+        <label><b>Description</b></label>
+      </div>
+      <input
+        type="text"
+        name="description"
+        [(ngModel)]="description"
+        id="description"
+        placeholder="Add Description"
+        required
+      />
     </div>
-    <input
-      type="text"
-      name="description"
-      [(ngModel)]="description"
-      id="description"
-      placeholder="Add Description"
-    />
-  </div>
-  <div class="form-control">
-    <div class="mb-2">
-      <label for="role">Choose Assignment</label>
-    </div>
-    <select
-      name="assignment"
-      id="assignment"
-      class="assignment"
-      [(ngModel)]="assignmentId"
-    >
-      <option
-        *ngFor="let assignment of data.assignments"
-        [value]="assignment.assignmentId"
+    <div class="form-control">
+      <div class="mb-2">
+        <label for="assignment">Choose Assignment</label>
+      </div>
+      <select
+        name="assignment"
+        id="assignment"
+        class="assignment"
+        [(ngModel)]="assignmentId"
+        required
       >
-        {{ assignment.assignmentName }}
-      </option>
-    </select>
-  </div>
-  <div class="buttons">
-    <button (click)="returnTrue()" class="positive btn btn-sm">
-      {{ data.positiveButton }}
-    </button>
-    <button (click)="returnFalse()" class="negative btn btn-sm">
-      {{ data.negativeButton }}
-    </button>
-  </div>
+        <option value="">-- Select an Assignment --</option>
+        <option
+          *ngFor="let assignment of data.assignments"
+          [value]="assignment.assignmentId"
+        >
+          {{ assignment.assignmentName }}
+        </option>
+      </select>
+    </div>
+    <div class="buttons">
+      <button
+        type="submit"
+        class="positive btn btn-sm"
+        [disabled]="!myForm.valid"
+        (click)="returnTrue()"
+      >
+        {{ data.positiveButton }}
+      </button>
+      <button (click)="returnFalse()" class="negative btn btn-sm">
+        {{ data.negativeButton }}
+      </button>
+    </div>
+  </form>
 </div>

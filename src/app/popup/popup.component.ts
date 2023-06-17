@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface PopupData {
   title: string;
-  content: string;
+  content: any[];
   positiveButton: string;
   negativeButton?: string;
 }

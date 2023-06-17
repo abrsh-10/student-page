@@ -38,9 +38,15 @@
     font-weight: 700;
     font-size: 1.65em;
 }
+.btn{
+    background-color: white;
+    color: #1da1f2;
+    border: none;
+    font-weight: 100;
+}
 .btn:hover{
-  background-color: maroon;
-  color: white;
+background-color: #1da1f2;
+    color: white;
 }
 
 .card-title .course-name {

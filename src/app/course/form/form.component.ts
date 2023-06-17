@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AssignmentSolution } from 'src/app/models/assignment-solution';
 import { Assignments } from 'src/app/models/assignments';
@@ -16,6 +16,7 @@ export interface FormData {
   styleUrls: ['./form.component.css'],
 })
 export class FormComponent {
+  file!: ElementRef;
   description?: string;
   assignmentId?: string;
   selectedFile?: File;

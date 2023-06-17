@@ -4,6 +4,8 @@ import { Topic } from '../../models/topic';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { environment } from 'src/environments/environment';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -12,7 +14,7 @@ export class TopicService extends DataService<Topic> {
     super(http);
   }
   protected getUrl(): string {
-    return 'http://localhost:8083/api/topic';
+    return environment.topicApiUrl;
   }
   getTopics(id: String): Observable<Topic> {
     const url = `${this.getUrl()}/id`;

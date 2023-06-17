@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { DataService } from 'src/app/service/DataService';
 import { Course } from '../../models/course';
 
+import { environment } from 'src/environments/environment';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -13,7 +15,7 @@ export class CourseService extends DataService<Course> {
   }
 
   protected getUrl(): string {
-    return 'http://localhost:8083/api/course';
+    return environment.courseApiUrl;
   }
   getCourses(id: String[]): Observable<Course[]> {
     const url = `${this.getUrl()}/id`;

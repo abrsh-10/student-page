@@ -8,4 +8,15 @@
     background-attachment: fixed;
 } */
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
+.btn{
+    border: 1px solid;
+    margin-bottom: 5px;
+    background-color: #1DA1F2;
+    color: white;
+}
+
+.btn:hover {
+    background-color: white;
+    color: #1DA1F2;
+}

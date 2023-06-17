@@ -1,0 +1,118 @@
+<div class="navigationBar">
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <div class="left-side">
+        <div>
+          <img
+            src="assets/images/aaulogo.png"
+            alt="AAU logo"
+            class="aau-logo"
+          />
+        </div>
+        <div class="slogan">
+          <h2 class="main mt-3">AAU online learning</h2>
+          <h4 class="secondary">
+            Seek wisdom, Elevate your intellect and Serve humanity!
+          </h4>
+        </div>
+      </div>
+      <ul class="navbar-nav mr-3" routerLinkActive="active">
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/contact">contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/about">about us</a>
+        </li>
+        <li class="nav-item">
+          <div
+            [hidden]="true"
+            id="g_id_onload"
+            data-client_id="159479957223-qka39ssrtraeilbuhv0a5r07sn43oemq.apps.googleusercontent.com"
+            data-context="signin"
+            data-ux_mode="popup"
+            data-login_uri="http://localhost:8086/api/user/login"
+            data-auto_select="true"
+            data-itp_support="true"
+          ></div>
+          <div
+            id="google_login"
+            class="g_id_signin"
+            data-type="standard"
+            data-shape="rectangular"
+            data-theme="outline"
+            data-text="signin_with"
+            data-size="medium"
+            data-logo_alignment="left"
+          ></div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+<div class="main-content">
+  <div class="col-lg-6 col-sm-12">
+    <h1>Teach from wherever, whenever!</h1>
+    <h6>Welcome to AAU's online teaching platform.</h6>
+    <h6>
+      You can browse through the available courses and upload course materials.
+    </h6>
+    <h6>Education awaits!</h6>
+  </div>
+  <div class="col-lg-6 teach d-none d-lg-flex">
+    <img src="../../assets/images/teach.jpg" alt="TEACH" />
+  </div>
+</div>
+<div class="cards">
+  <div class="card">
+    <div class="card-content">
+      <i class="bi bi-book-half"></i>
+      <p class="material">High-quality Materials</p>
+      <p class="material_description">
+        we offer courses that are designed and developed by experienced faculty
+        members and experts.
+      </p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-content">
+      <i class="bi bi-card-list"></i>
+      <p class="material">Timely Exams</p>
+      <p class="material_description">
+        Exams are held in a timely manner as they are in normal classes.
+      </p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-content">
+      <i class="bi bi-award"></i>
+      <p class="material">Degree</p>
+      <p class="material_description">
+        we offer courses that are designed and developed by experienced faculty
+        members and experts.
+      </p>
+    </div>
+  </div>
+</div>
+<div class="container-fluid footer mt-3">
+  <footer class="text-center text-white">
+    <div class="container navigations p-4 pb-0">
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/contact">contact</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/about">about us</a>
+      </li>
+    </div>
+    <hr />
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+      © 2023 Copyright:
+      <a class="text-white" href="http://www.aau.edu.et/">aau.edu.et</a>
+    </div>
+  </footer>
+</div>
