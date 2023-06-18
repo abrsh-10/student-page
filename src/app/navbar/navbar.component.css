@@ -34,3 +34,11 @@ ul{
     color: rgb(252, 218, 218);
     font-size:large;
 }
+.btn-sm{
+    background-color: white;
+    border-radius: 8px;
+}
+.btn-sm:hover{
+    background-color: #0077b6;
+    color: white;
+}

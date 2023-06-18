@@ -21,24 +21,25 @@
           <a class="nav-link" routerLink="">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/contact">contact</a>
+          <a class="nav-link" (click)="toCourses()">courses</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/contact">Contact</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/about">about us</a>
         </li>
         <li class="nav-item">
           <div
-            [hidden]="true"
             id="g_id_onload"
             data-client_id="159479957223-qka39ssrtraeilbuhv0a5r07sn43oemq.apps.googleusercontent.com"
             data-context="signin"
             data-ux_mode="popup"
-            data-login_uri="http://localhost:8086/api/user/login"
-            data-auto_select="true"
-            data-itp_support="true"
+            data-callback="getToken"
+            data-auto_prompt="false"
           ></div>
+
           <div
-            id="google_login"
             class="g_id_signin"
             data-type="standard"
             data-shape="rectangular"

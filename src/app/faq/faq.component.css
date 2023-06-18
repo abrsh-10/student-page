@@ -1,0 +1,74 @@
+.header{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+    border-radius: 2px;
+    background-color: #1DA1F2;
+    color: white;
+}
+.home-button{
+    width: 120px;
+    margin: 5px;
+    cursor: pointer;
+}
+.heading{
+    margin-left: 35px;
+}
+.title{
+    margin-left: 50px;
+    margin-top: 10px;
+    width: 80%;
+    color: #1DA1F2;
+}
+.feedbacks{
+    margin-top: 50px;
+    margin-left: 3rem;
+    margin-right: 5rem;
+    max-width: 400px;
+    height: 350px;
+    padding: 10px;
+    overflow-y: auto;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.19);
+}
+.feedback-form{
+    display: grid;
+    place-items: center;
+    margin-left: 10px;
+}
+#feedback{
+    width: 100%;
+}
+.submit{
+    margin-top: 30px;
+}
+.faqs{
+    width: 60%;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: 20px;
+}
+@media (max-width: 800px) {
+    .faqs {
+        width: 100%;
+    }
+}
+p{
+    color: #1DA1F2;
+    cursor: pointer;
+}
+.faq-question{
+    cursor: pointer;
+    font-weight: 450;
+    letter-spacing: 1.7px;
+}
+.faq-question:hover{
+    color: #1DA1F2;
+}
+.faq-answer{
+    margin-left:20px;
+    margin-top: 20px;   
+}
+footer {
+    background-color: #1DA1F2;
+    color: white;
+}

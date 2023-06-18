@@ -16,9 +16,9 @@
           </h4>
         </div>
       </div>
-      <ul class="navbar-nav mr-3" routerLinkActive="active">
+      <ul class="navbar-nav" routerLinkActive="active">
         <li class="nav-item active">
-          <a class="nav-link" routerLink="">Home</a>
+          <a class="nav-link" routerLink="/home">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/contact">contact</a>
@@ -27,7 +27,10 @@
           <a class="nav-link" routerLink="/news">news</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/about">about us</a>
+          <a class="nav-link me-5" routerLink="/about">about us</a>
+        </li>
+        <li class="nav-item">
+          <button class="btn-sm mt-1" (click)="logout()">log out</button>
         </li>
       </ul>
     </div>

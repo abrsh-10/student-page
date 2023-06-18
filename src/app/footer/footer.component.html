@@ -2,7 +2,7 @@
   <footer class="text-center text-white">
     <div class="container p-4 pb-0">
       <section class="">
-        <form action="">
+        <form #myForm="ngForm">
           <div class="row d-flex justify-content-center">
             <div class="col-auto">
               <p class="pt-2">
@@ -11,12 +11,22 @@
             </div>
             <div class="col-md-5 col-12">
               <div class="form-outline form-white mb-4">
-                <textarea class="form-control" id="feedback"></textarea>
+                <textarea
+                  class="form-control"
+                  id="feedback"
+                  name="feedback"
+                  [(ngModel)]="message"
+                ></textarea>
                 <label class="form-label" for="feedback">feedback here</label>
               </div>
             </div>
             <div class="col-auto">
-              <button type="submit" class="btn btn-outline-light mb-4">
+              <button
+                type="submit"
+                class="btn btn-outline-light mb-4"
+                [disabled]="!myForm.valid"
+                (click)="submitFeedback()"
+              >
                 send
               </button>
             </div>

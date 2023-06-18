@@ -9,11 +9,11 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 export class VideoComponent implements OnInit {
   @Input() videoId!: string;
   urlString!: string;
+  isLoaded = false;
   url: SafeResourceUrl = '';
   constructor(private _sanitizer: DomSanitizer) {}
   ngOnInit(): void {
     this.urlString = 'https://youtube.com/embed/' + this.videoId;
     this.url = this._sanitizer.bypassSecurityTrustResourceUrl(this.urlString);
-    console.log(this.urlString);
   }
 }

@@ -141,6 +141,36 @@ margin-right: 5px;
 .card-body{
     overflow: auto;
 }
+.exams-container{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 20px;
+    margin-left: 5%;
+}
+.exam-name{
+    cursor: pointer;
+    font-size: x-large;
+}
+.exam-details{
+    margin-left: 20px;
+}
+.exam-details>ul>li{
+    margin-top: 8px;
+    font-variant: small-caps;
+    font-weight: 500;
+}
+.exam-details>ul>li>b{
+    text-decoration: underline;
+    font-size: larger;
+}
+.exam-start-button{
+    position: absolute;
+    display: inline;
+    right: 10px;
+}
 .next-btn{
     margin-left: auto;
     margin-right: 10px;

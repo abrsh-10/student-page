@@ -23,6 +23,7 @@
                 [countdown]="true"
                 [startTime]="examDuration!"
                 format="user"
+                (onComplete)="onTimerComplete()"
                 >[hours]</cd-timer
               >
             </td>
@@ -31,6 +32,7 @@
                 [countdown]="true"
                 [startTime]="examDuration!"
                 format="user"
+                (onComplete)="onTimerComplete()"
                 >[minutes]</cd-timer
               >
             </td>
@@ -39,6 +41,7 @@
                 [countdown]="true"
                 [startTime]="examDuration!"
                 format="user"
+                (onComplete)="onTimerComplete()"
                 >[seconds]</cd-timer
               >
             </td>

@@ -6,6 +6,8 @@ import { ExamSolution } from 'src/app/models/exam-solution';
 import { ExamSolutionService } from '../services/exam-solution.service';
 import { PopupComponent, PopupData } from 'src/app/popup/popup.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-exam',
@@ -21,11 +23,14 @@ export class ExamComponent implements OnInit {
   questions?: any[];
   currentPage!: number;
   answers: Answer[] = [];
+  private timerCompleteEvents: number = 0;
 
   constructor(
     private examService: ExamService,
     private examSolutionService: ExamSolutionService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private route: Router
   ) {}
 
   ngOnInit(): void {
@@ -102,18 +107,26 @@ export class ExamComponent implements OnInit {
         ); // create an instance of ExamSolution
         this.examSolutionService.postExamSolution(examSolution).subscribe(
           (result) => {
-            // handle the successful response
-            console.log('Exam solution submitted successfully:', result);
+            this.showSnackbarAction(
+              'your exam solution have been successfully recorded',
+              'OK'
+            );
           },
           (error) => {
-            // handle the error response
-            console.error('Failed to submit exam solution:', error);
+            this.showSnackbarAction(
+              'could not record your exam Solution',
+              'OK'
+            );
           }
         );
       } else {
         console.log('Dialog was closed');
         return;
       }
+    });
+    const currentUrl = this.route.url;
+    this.route.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.route.navigate([currentUrl]);
     });
   }
   enterFullScreen(element: HTMLElement): void {
@@ -144,5 +157,35 @@ export class ExamComponent implements OnInit {
     } else if ((document as any).msExitFullscreen) {
       (document as any).msExitFullscreen();
     }
+  }
+  onTimerComplete() {
+    this.timerCompleteEvents++;
+    if (this.timerCompleteEvents == 3) {
+      const examSolution: ExamSolution = new ExamSolution(
+        this.answers,
+        this.examId!,
+        sessionStorage.getItem('email')!
+      ); // create an instance of ExamSolution
+      this.examSolutionService.postExamSolution(examSolution).subscribe(
+        (result) => {
+          this.showSnackbarAction(
+            'time ended but your exam solution until now have been successfully recorded',
+            'OK'
+          );
+        },
+        (error) => {
+          this.showSnackbarAction('could not record your exam solution', 'OK');
+        }
+      );
+      const currentUrl = this.route.url;
+      this.route.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.route.navigate([currentUrl]);
+      });
+    }
+  }
+  showSnackbarAction(content: string, action: string | undefined) {
+    let snack = this.snackBar.open(content, action);
+    snack.afterDismissed().subscribe(() => {});
+    snack.onAction().subscribe(() => {});
   }
 }

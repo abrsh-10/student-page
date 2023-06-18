@@ -18,11 +18,15 @@
 }
 .positive{
     margin-right: 10px;
+    background-color: transparent;
+    border: none;
+    color: black;
 }
 .negative{
-    background-color: red;
+    background-color: transparent;
+    border: none;
+    color: black;
 }
 .negative:hover {
-    background-color: white;
-    color: red;
+    border: 1px solid;
 }

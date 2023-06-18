@@ -16,6 +16,7 @@ import { AssignmentSolutionService } from '../services/assignment-solution.servi
 import { AssignmentSolution } from 'src/app/models/assignment-solution';
 import { PopupComponent, PopupData } from 'src/app/popup/popup.component';
 import { Assignments } from 'src/app/models/assignments';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-course',
@@ -63,12 +64,12 @@ export class CourseComponent implements OnInit {
     private examService: ExamService,
     private assignmentService: AssignmentService,
     private assignmentSolutionService: AssignmentSolutionService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
   ngOnInit(): void {
     this.courseId = this.route.snapshot.paramMap.get('id');
     this.email = sessionStorage.getItem('email')!;
-    console.log(this.email);
     this.courseService.getCourse(this.courseId).subscribe((data) => {
       this.course = data;
     });
@@ -153,7 +154,9 @@ export class CourseComponent implements OnInit {
       this.showQuestion = true;
       this.examId = exam!.examId;
       this.examActiveStatus = exam!.active;
-      this.examDuration = exam!.duration * 60;
+      //calculate the remaining duration
+      this.examDuration =
+        this.getRemainingMinutes(exam?.startTime!, exam?.duration!) * 60;
     }
   }
   activateVideo(videoId: string) {
@@ -207,7 +210,6 @@ export class CourseComponent implements OnInit {
               );
           });
       } else {
-        console.log('Dialog was closed');
         return;
       }
     });
@@ -232,14 +234,14 @@ export class CourseComponent implements OnInit {
                 'MB',
               'Solution description: ' + solution.assignmentSolutionDescription,
             ],
-            positiveButton: 'close',
-            negativeButton: 'delete',
+            positiveButton: 'delete',
+            negativeButton: 'close',
           };
           const dialogRef = this.dialog.open(PopupComponent, { data });
           dialogRef.afterClosed().subscribe((result) => {
-            if (!result) {
+            if (result) {
               const data: PopupData = {
-                title: 'Delte Assignment Solution',
+                title: 'Delete Assignment Solution',
                 content: ['Are you sure to delete the assignment solution'],
                 positiveButton: 'Yes',
                 negativeButton: 'No',
@@ -251,12 +253,10 @@ export class CourseComponent implements OnInit {
                     .deleteAssignmentSolution(solution.assignmentSolutionId)
                     .subscribe();
                 } else {
-                  console.log('Dialog was closed');
                   return;
                 }
               });
             } else {
-              console.log('Dialog was closed');
               return;
             }
           });
@@ -272,7 +272,6 @@ export class CourseComponent implements OnInit {
             if (result) {
               this.showUploadForm([assignment]);
             } else {
-              console.log('Dialog was closed');
               return;
             }
           });
@@ -305,9 +304,11 @@ export class CourseComponent implements OnInit {
 
     const date = new Date(year, month, day, hours, minutes);
     const monthName = date.toLocaleString('default', { month: 'short' });
-    const formattedDate = `${monthName} ${date.getDate()} ${date.getFullYear()} @ ${date.getHours()}:${this.formatMinutes(
+    const formattedHours = hours % 12 || 12; // Convert 0 to 12 for display
+    const timeSuffix = hours < 12 ? 'am' : 'pm'; // Determine time suffix
+    const formattedDate = `${monthName} ${date.getDate()} ${date.getFullYear()} @ ${formattedHours}:${this.formatMinutes(
       date.getMinutes()
-    )}`;
+    )} ${timeSuffix}`;
 
     return formattedDate;
   }
@@ -317,5 +318,21 @@ export class CourseComponent implements OnInit {
       return `0${minutes}`;
     }
     return minutes.toString();
+  }
+  expand(exam: Exam) {
+    exam.expanded = !exam.expanded;
+  }
+  getRemainingMinutes(dateString: string, minutesToAdd: number): number {
+    const inputDate = new Date(dateString);
+    const targetDate = new Date(inputDate.getTime() + minutesToAdd * 60 * 1000); // Add minutes to input date
+    const currentDate = new Date();
+    const timeDifference = targetDate.getTime() - currentDate.getTime();
+    const minutesDifference = timeDifference / (60 * 1000); // Convert milliseconds to minutes and round up
+    return minutesDifference;
+  }
+  showSnackbarAction(content: string, action: string | undefined) {
+    let snack = this.snackBar.open(content, action);
+    snack.afterDismissed().subscribe(() => {});
+    snack.onAction().subscribe(() => {});
   }
 }

@@ -4,7 +4,7 @@
       <a class="brand">
         <div
           class="home-logo col-md-2 col-sm-1"
-          (click)="changeRoute('/courses/all')"
+          (click)="changeRoute('/courses')"
         >
           <i class="fa fa-home" style="color: #1da1f2"></i>
         </div>
@@ -221,40 +221,40 @@
             >
               No Exams yet
             </h3>
-            <div class="col-12 mb-4" *ngFor="let exam of examQuestions">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex justify-content-between p-md-1">
-                    <div class="d-flex flex-row">
-                      <div class="align-self-center me-2">
-                        <i class="material-icons">article</i>
-                      </div>
-                      <div>
-                        <h4 class="truncate">
-                          {{ exam.examName }}
-                        </h4>
-                        <p class="text-muted" style="white-space: pre-wrap">
-                          weight:<b>{{ exam.weight }} marks</b>
-                        </p>
-                        <p class="text-muted" style="white-space: pre-wrap">
-                          {{ formatDate(exam.startTime) }}
-                        </p>
-                        <p class="text-muted" style="white-space: pre-wrap">
-                          duration: for <b>{{ exam.duration }} minutes</b>
-                        </p>
-                      </div>
-                    </div>
-                    <div class="align-self-center me-1">
-                      <button
-                        class="btn btn-outline-dark mb-0"
-                        (click)="toogleSideBarItems(6, undefined, exam)"
-                      >
-                        Start Exam
-                      </button>
-                    </div>
-                  </div>
+            <div
+              class="col-11 mb-4 exams-container"
+              *ngFor="let exam of examQuestions"
+            >
+              <div class="exam">
+                <div
+                  class="exam-name align-self-center h4"
+                  (click)="expand(exam)"
+                >
+                  <i class="bi bi-caret-down-fill"></i> &nbsp;&nbsp;&nbsp;{{
+                    exam.examName
+                  }}
+                </div>
+                <div *ngIf="exam.expanded" class="exam-details">
+                  <ul>
+                    <li>
+                      weight: <b>{{ exam.weight }}</b>
+                    </li>
+                    <li>
+                      start Date & Time:<b> {{ formatDate(exam.startTime) }}</b>
+                    </li>
+                  </ul>
                 </div>
               </div>
+              <div class="align-self-center exam-start-button">
+                <button
+                  class="btn btn-outline-dark mb-0"
+                  [disabled]="!exam.active"
+                  (click)="toogleSideBarItems(6, undefined, exam)"
+                >
+                  Start Exam
+                </button>
+              </div>
+              <hr />
             </div>
           </div>
         </section>
@@ -329,9 +329,6 @@
         </section>
         <section *ngIf="showQuestion">
           <app-exam [examId]="examId" [examDuration]="examDuration"></app-exam>
-          <!-- <ng-template #notActive>
-          <div class="h3">exam is not yet active or either have passed</div>
-        </ng-template> -->
         </section>
       </div>
     </div>
