@@ -8,6 +8,8 @@ import { PopupComponent, PopupData } from 'src/app/popup/popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-exam',
@@ -24,6 +26,7 @@ export class ExamComponent implements OnInit {
   currentPage!: number;
   answers: Answer[] = [];
   private timerCompleteEvents: number = 0;
+  email?: string;
 
   constructor(
     private examService: ExamService,
@@ -90,6 +93,14 @@ export class ExamComponent implements OnInit {
     this.answers.push(newAnswer);
   }
   onSubmit(): void {
+    if (sessionStorage.getItem('token')) {
+      const encryptedEmail = sessionStorage.getItem('token');
+      const decryptedEmail = CryptoJS.AES.decrypt(
+        encryptedEmail!.toString(),
+        environment.jwtSecret
+      ).toString(CryptoJS.enc.Utf8);
+      this.email = decryptedEmail;
+    }
     this.exitFullScreen();
     const data: PopupData = {
       title: 'Submit Exam Solution',
@@ -103,7 +114,7 @@ export class ExamComponent implements OnInit {
         const examSolution: ExamSolution = new ExamSolution(
           this.answers,
           this.examId!,
-          sessionStorage.getItem('email')!
+          this.email!
         ); // create an instance of ExamSolution
         this.examSolutionService.postExamSolution(examSolution).subscribe(
           (result) => {
@@ -141,7 +152,7 @@ export class ExamComponent implements OnInit {
       (element as any).msRequestFullscreen();
     }
     // Set background color to white
-    element.style.backgroundColor = '#e0dbdbe3';
+    element.style.backgroundColor = '#FFFFFF';
 
     // Add scrolling to the full screen
     element.style.overflow = 'auto';
@@ -164,7 +175,7 @@ export class ExamComponent implements OnInit {
       const examSolution: ExamSolution = new ExamSolution(
         this.answers,
         this.examId!,
-        sessionStorage.getItem('email')!
+        this.email!
       ); // create an instance of ExamSolution
       this.examSolutionService.postExamSolution(examSolution).subscribe(
         (result) => {

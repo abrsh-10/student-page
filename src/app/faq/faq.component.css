@@ -20,6 +20,9 @@
     width: 80%;
     color: #1DA1F2;
 }
+.main-content{
+    height: 100vh;
+}
 .feedbacks{
     margin-top: 50px;
     margin-left: 3rem;

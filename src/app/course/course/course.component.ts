@@ -17,6 +17,8 @@ import { AssignmentSolution } from 'src/app/models/assignment-solution';
 import { PopupComponent, PopupData } from 'src/app/popup/popup.component';
 import { Assignments } from 'src/app/models/assignments';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from 'src/environments/environment';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-course',
@@ -69,15 +71,22 @@ export class CourseComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.courseId = this.route.snapshot.paramMap.get('id');
-    this.email = sessionStorage.getItem('email')!;
-    this.courseService.getCourse(this.courseId).subscribe((data) => {
-      this.course = data;
-    });
-    this.courseMaterialService
-      .getCourseMaterial(this.courseId)
-      .subscribe((data) => {
-        this.courseMaterials = data;
+    if (sessionStorage.getItem('token')) {
+      const encryptedEmail = sessionStorage.getItem('token');
+      const decryptedEmail = CryptoJS.AES.decrypt(
+        encryptedEmail!.toString(),
+        environment.jwtSecret
+      ).toString(CryptoJS.enc.Utf8);
+      this.email = decryptedEmail;
+      this.courseService.getCourse(this.courseId).subscribe((data) => {
+        this.course = data;
       });
+      this.courseMaterialService
+        .getCourseMaterial(this.courseId)
+        .subscribe((data) => {
+          this.courseMaterials = data;
+        });
+    }
   }
   changeRoute(route: string) {
     this.router.navigate([route]);
@@ -200,12 +209,16 @@ export class CourseComponent implements OnInit {
               .postAssignmentSolution(result)
               .subscribe(
                 (result) => {
-                  // handle the successful response
-                  console.log('Exam solution submitted successfully:', result);
+                  this.showSnackbarAction(
+                    'assignment solution successfully uploaded',
+                    'OK'
+                  );
                 },
                 (error) => {
-                  // handle the error response
-                  console.error('Failed to submit exam solution:', error);
+                  this.showSnackbarAction(
+                    'could not upload assignment solution',
+                    'OK'
+                  );
                 }
               );
           });
@@ -251,7 +264,12 @@ export class CourseComponent implements OnInit {
                 if (result) {
                   this.assignmentSolutionService
                     .deleteAssignmentSolution(solution.assignmentSolutionId)
-                    .subscribe();
+                    .subscribe(() => {
+                      this.showSnackbarAction(
+                        'assignment solution successfully deleted',
+                        'OK'
+                      );
+                    });
                 } else {
                   return;
                 }

@@ -11,8 +11,8 @@
     border: 1px solid;
     border-radius: 5px;
     padding: 7px;
-    background-color: #1DA1F2;
-    color: #d9a74a;
+    background-color: black;
+    color: white;
 }
 
 .table-bordered.rounded {

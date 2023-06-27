@@ -11,4 +11,5 @@ export const environment = {
   assignmentSolutionApiUrl: 'http://localhost:8085/api/assignment-solution',
   feedbackApiUrl: 'http://localhost:8081/api/feedback',
   faqApiUrl: 'http://localhost:8082/api/faq',
+  jwtSecret: 'AAUonLineLEArning',
 };

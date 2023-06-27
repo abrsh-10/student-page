@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import * as CryptoJS from 'crypto-js';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -20,9 +22,8 @@ export class HomeComponent implements AfterViewInit {
   login(token: string) {
     this.authService.loginWithGoogle(token).subscribe(
       (response) => {
-        console.log('Response:', response);
-        if (response.email) {
-          sessionStorage.setItem('email', response.email);
+        if (response.email && response.role == 'Student') {
+          this.encryptAndStoreEmail(response.email);
           this.router.navigate(['/courses']);
         } else {
           this.router.navigate(['/error']);
@@ -35,10 +36,28 @@ export class HomeComponent implements AfterViewInit {
     );
   }
   toCourses() {
-    if (sessionStorage.getItem('email')) {
-      this.router.navigate(['/courses']);
+    if (sessionStorage.getItem('token')) {
+      const encryptedEmail = sessionStorage.getItem('token');
+      const decryptedEmail = CryptoJS.AES.decrypt(
+        encryptedEmail!.toString(),
+        environment.jwtSecret
+      ).toString(CryptoJS.enc.Utf8);
+      console.log(decryptedEmail);
+      if (decryptedEmail) {
+        this.router.navigate(['/courses']);
+        return;
+      }
     } else {
-      alert('please login first');
+      alert('need to login first');
+      return;
     }
+    alert('please login first');
+  }
+  encryptAndStoreEmail(email: string): void {
+    const encryptedEmail = CryptoJS.AES.encrypt(
+      email,
+      environment.jwtSecret
+    ).toString();
+    sessionStorage.setItem('token', encryptedEmail);
   }
 }
