@@ -20,6 +20,27 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
     background-color: white;
     color: #1DA1F2;
 }
-
+.cursor-pointer {
+    cursor: pointer;
+}
+select{
+    border-radius: 6px;
+    border: #1DA1F2 2.5px solid;
+}
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2244ed;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

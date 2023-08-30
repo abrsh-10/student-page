@@ -11,4 +11,13 @@
     allowfullscreen
     (load)="isLoaded = true"
   ></iframe>
+  <div class="transcribe">
+    <button (click)="transcribeVideo()" class="transcribe-btn btn">
+      transcribe
+    </button>
+  </div>
+  <div class="transcribed-text" *ngIf="isTranscribed">
+    <h1 class="text-center">Transcribed Text</h1>
+    {{ transcribedText }}
+  </div>
 </div>

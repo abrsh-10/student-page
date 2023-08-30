@@ -1,18 +1,20 @@
 .navbar{
     padding: 0px;
+    height: 50px;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.19);
 }
 .brand{
     display: flex;
-    place-items: center;
+    place-items: top;
     justify-content: space-between;
     margin-left: -11px;
     text-decoration: none;
     color: black;
 }
 .home-logo{
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
+    margin-top: -8px;
     display: flex;
     place-items: center;
     justify-content: center;
@@ -29,12 +31,14 @@
 }
 .right-side {
     display: flex;
+    align-items: center;
     margin-right: 5px;
 }
 
 .aau-logo {
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
+    margin-top: -15px;
     margin-right: 10px;
 }
 
@@ -60,8 +64,8 @@
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.19);
 }
 .hide-button{
-        width: 130px;
-        height: 60px;
+        width: 100px;
+        height: 40px;
         display: flex;
         place-items: center;
         justify-content: center;
@@ -135,8 +139,50 @@
 .truncate {
     max-width: 500px;
 }
-.courseMaterial-description{
-margin-right: 5px;
+.course-materials{
+    display: grid;
+    place-items: left;
+    padding-left: 25px;
+    border: #1DA1F2 2px solid;
+    border-radius: 8px;
+    height: 25vh;
+    margin-right: auto;
+        margin-left: auto;
+}
+.course-material{
+    padding: 0px;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+
+}
+.course-material>.h2 {
+    font-weight: 500;
+    color: #1DA1F2;
+
+}
+.bi-file-earmark-arrow-down-fill{
+    position: relative;
+    font-size: 30px;
+    color: #1DA1F2;
+}
+.bi-file-earmark-arrow-down-fill::after {
+    content: "Download";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem;
+    color: black;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.bi-file-earmark-arrow-down-fill:hover::after {
+    opacity: 1;
 }
 .card-body{
     overflow: auto;
@@ -192,4 +238,84 @@ margin-right: 5px;
 .uploadButton button:hover{
     background-color: white;
         color: #1DA1F2;
+}
+.AI-navbar{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    width: 80%;
+    height: 20px;
+    border-radius: 8px;
+    margin-left: 10%;
+    background-color: #1DA1F2;
+}
+.AI-navbar>ul{
+    list-style-type: none;
+    display: flex;
+}
+.AI-navbar>ul>li{
+    margin-right: 20%;
+    color: white;
+    font-weight: 400;
+}
+.translate-section{
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 40px;
+    margin-bottom: auto;
+}
+.inform{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+p.information{
+    font-size: small;
+    font-weight: 600;
+}
+.textBox{
+    position: relative;
+}
+.detected{
+    position: relative;
+    display: block;
+    
+}
+.detected-child{
+    position: absolute;
+    right: 0px;
+}
+.translate-option{
+    display: grid;
+    place-items: center;
+}
+.fa-microphone,.bi-volume-up , .bi-download{
+    margin-left: 20px;
+    font-size: 25px;
+    color: #000;
+    cursor: pointer;
+}
+.result{
+    width: 100%;
+    height: 220px;
+    border: 1px solid #000;
+}
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.recording {
+    animation: pulse 1s infinite;
+    color: red;
 }

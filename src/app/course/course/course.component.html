@@ -8,7 +8,7 @@
         >
           <i class="fa fa-home" style="color: #1da1f2"></i>
         </div>
-        <h2 class="col-10 course-name">{{ course.courseName }}</h2>
+        <h2 class="col-12 course-name">{{ course.courseName }}</h2>
       </a>
       <div class="right-side d-none d-lg-flex">
         <div>
@@ -27,7 +27,7 @@
 
   <div class="container-fluid">
     <div class="row">
-      <div *ngIf="showSideBar" class="side-bar col-lg-3 col-12">
+      <div *ngIf="showSideBar" class="side-bar col-lg-2 col-12">
         <div class="hide-button" (click)="toogleSideBar()">&#10005; Hide</div>
         <div class="side-bar-container">
           <div
@@ -76,6 +76,15 @@
         >
           Assignments
         </div>
+        <div
+          [ngClass]="{
+            'side-bar-items': !showAIServices,
+            'side-bar-item-clicked': showAIServices
+          }"
+          (click)="toogleSideBarItems(7)"
+        >
+          AI services
+        </div>
       </div>
       <div
         *ngIf="!showSideBar"
@@ -88,11 +97,18 @@
         <section *ngIf="showCourseMaterial">
           <div class="row">
             <div class="col-12 mt-3 mb-1">
-              <h5 class="text-uppercase">Course Materials</h5>
-              <p>your course materials for this course are listed below</p>
+              <h5
+                class="text-uppercase text-center mb-4"
+                style="font-size: 40px; color: #1da1f2"
+              >
+                Course Materials
+              </h5>
+              <p class="text-muted text-capitalize">
+                your course materials for this course are listed below
+              </p>
             </div>
           </div>
-          <div class="row">
+          <div class="row g-0">
             <h3
               class="text-muted"
               *ngIf="!courseMaterials || !courseMaterials.length"
@@ -100,51 +116,39 @@
               No Course Materials yet
             </h3>
             <div
-              class="col-12 mb-4"
+              class="col-4 col-xs-12 mb-4 course-materials"
               *ngFor="let courseMaterial of courseMaterials"
             >
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex justify-content-between p-md-1">
-                    <div class="d-flex flex-row">
-                      <div class="align-self-top">
-                        <i class="fa fa-book fa-lg me-4"></i>
-                      </div>
-                      <div>
-                        <h4 class="truncate">
-                          {{ courseMaterial.courseMaterialName }}
-                        </h4>
-                        <p
-                          class="courseMaterial-description text-muted"
-                          style="white-space: pre-wrap"
-                        >
-                          <span class="bullet">&#8226;</span>
-                          {{ courseMaterial.courseMaterialDescription }}
-                        </p>
-                        <p class="mb-0">
-                          {{
-                            courseMaterial.courseMaterialSize / 1048576
-                              | number : "1.2-2"
-                          }}
-                          MB
-                        </p>
-                      </div>
-                    </div>
-                    <div
-                      class="align-self-center me-1 d-flex flex-direction-column"
-                    >
-                      <button
-                        class="btn btn-outline-dark mb-0"
-                        (click)="
-                          downloadFile(
-                            courseMaterial.courseMaterialId,
-                            courseMaterial.courseMaterialName
-                          )
-                        "
-                      >
-                        download
-                      </button>
-                    </div>
+              <div class="course-material">
+                <div class="h2 mb-2">
+                  {{ courseMaterial.courseMaterialName }}
+                </div>
+                <div class="h6 text-muted">
+                  {{ courseMaterial.courseMaterialDescription }}
+                </div>
+                <div style="margin-left: auto" class="d-flex">
+                  <button
+                    type="button"
+                    class="btn"
+                    (click)="
+                      viewPdf(
+                        courseMaterial.courseMaterialId,
+                        courseMaterial.courseMaterialName
+                      )
+                    "
+                  >
+                    view
+                  </button>
+                  <div>
+                    <i
+                      class="bi bi-file-earmark-arrow-down-fill cursor-pointer"
+                      (click)="
+                        downloadFile(
+                          courseMaterial.courseMaterialId,
+                          courseMaterial.courseMaterialName
+                        )
+                      "
+                    ></i>
                   </div>
                 </div>
               </div>
@@ -329,6 +333,143 @@
         </section>
         <section *ngIf="showQuestion">
           <app-exam [examId]="examId" [examDuration]="examDuration"></app-exam>
+        </section>
+        <section *ngIf="showAIServices">
+          <div class="AI-navbar">
+            <ul>
+              <li (click)="changeToTranslate(true)" class="cursor-pointer">
+                translate
+              </li>
+              <li (click)="changeToTranslate(false)" class="cursor-pointer">
+                summarize
+              </li>
+            </ul>
+          </div>
+          <section *ngIf="showTranslate" class="translate-section">
+            <p class="information text-center">
+              Input the text to be translated below Or input the speech to be
+              translated:<br />
+              (when using speech to text please specify the language you are
+              speaking in)
+            </p>
+            <div class="inform">
+              <div>
+                <span>From:&nbsp;</span>
+                <select name="from" id="from" [(ngModel)]="selectedLanguage">
+                  <option value="en-US">------FOR AUDIO ONLY------</option>
+                  <option
+                    *ngFor="let lang of audioLanguages"
+                    [value]="lang.code"
+                  >
+                    {{ lang.name }}
+                  </option>
+                </select>
+              </div>
+              <div>
+                <button class="btn btn-sm" (click)="showUploadForm()">
+                  upload audio file
+                </button>
+              </div>
+            </div>
+            <div class="textBox" style="width: 100%">
+              <textarea
+                rows="10%"
+                name="rawText"
+                style="width: 100%"
+                [(ngModel)]="rawText"
+                (change)="reset()"
+              ></textarea>
+              <div class="detected" *ngIf="showTranslateBox">
+                <div class="detected-child">
+                  Detected language:{{
+                    translatedText[0].detectedLanguage.language
+                  }}
+                </div>
+              </div>
+            </div>
+            <div class="translate-option mt-4">
+              <div>
+                <span style="margin-right: 10px">Translate To:</span>
+                <select
+                  name="translate-options"
+                  id="translateOptions"
+                  style="width: 100px"
+                  [(ngModel)]="translateTo"
+                >
+                  <option
+                    *ngFor="let language of languages"
+                    [value]="language.language"
+                  >
+                    {{ language.name }}
+                  </option>
+                </select>
+                <i
+                  class="fa-solid fa-microphone fa-lg"
+                  [class.recording]="isRecording"
+                  (click)="startRecording()"
+                ></i>
+              </div>
+              <div>
+                <button class="btn mt-3" (click)="translate()">
+                  translate
+                </button>
+              </div>
+            </div>
+            <div class="inform" *ngIf="showTranslateBox">
+              <p>Translated Text appears below</p>
+            </div>
+
+            <div class="result" *ngIf="showTranslateBox">
+              <p *ngIf="translatedText">
+                {{ translatedText[0].translations[0].text }}
+              </p>
+            </div>
+            <div class="translate-option my-3" *ngIf="showTranslateBox">
+              <div>
+                <i class="bi bi-volume-up"></i>
+                <i class="bi bi-download"></i>
+              </div>
+            </div>
+          </section>
+          <section *ngIf="showSummarize" class="translate-section">
+            <div class="inform">
+              <p>Input the text to be summarize below:<br /></p>
+              <div>
+                <button class="btn">upload</button>
+              </div>
+            </div>
+            <div class="textBox" style="width: 100%">
+              <textarea
+                rows="10%"
+                name="rawText"
+                style="width: 100%"
+                [(ngModel)]="rawText2"
+                (change)="reset()"
+              ></textarea>
+            </div>
+            <div class="translate-option mt-3">
+              <div>
+                <button class="btn mt-3" (click)="summarize()">
+                  summarize
+                </button>
+              </div>
+            </div>
+            <div class="inform" *ngIf="showSummarizeBox">
+              <p>summarized Text appears below</p>
+            </div>
+
+            <div class="result" *ngIf="showSummarizeBox">
+              <p *ngIf="summarizedText">
+                {{ summarizedText.text }}
+              </p>
+            </div>
+            <div class="translate-option my-3" *ngIf="showSummarizeBox">
+              <div>
+                <i class="bi bi-volume-up"></i>
+                <i class="bi bi-download"></i>
+              </div>
+            </div>
+          </section>
         </section>
       </div>
     </div>

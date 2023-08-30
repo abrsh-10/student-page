@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 
 export interface FormData {
   title: string;
-  assignments: any[];
+  assignments?: any[];
   fileIncluded: boolean;
   positiveButton: string;
   negativeButton?: string;
@@ -33,21 +33,25 @@ export class FormComponent {
     this.selectedFile = event.target.files[0];
   }
   returnTrue(): void {
-    if (sessionStorage.getItem('token')) {
-      const encryptedEmail = sessionStorage.getItem('token');
-      const decryptedEmail = CryptoJS.AES.decrypt(
-        encryptedEmail!.toString(),
-        environment.jwtSecret
-      ).toString(CryptoJS.enc.Utf8);
-      this.email = decryptedEmail;
+    if (this.data.assignments == null) {
+      this.dialogRef.close(this.selectedFile);
+    } else {
+      if (sessionStorage.getItem('token')) {
+        const encryptedEmail = sessionStorage.getItem('token');
+        const decryptedEmail = CryptoJS.AES.decrypt(
+          encryptedEmail!.toString(),
+          environment.jwtSecret
+        ).toString(CryptoJS.enc.Utf8);
+        this.email = decryptedEmail;
+      }
+      this.assignmentSolution = new AssignmentSolution(
+        this.selectedFile!,
+        this.email!,
+        this.description!,
+        this.assignmentId!
+      );
+      this.dialogRef.close(this.assignmentSolution);
     }
-    this.assignmentSolution = new AssignmentSolution(
-      this.selectedFile!,
-      this.email!,
-      this.description!,
-      this.assignmentId!
-    );
-    this.dialogRef.close(this.assignmentSolution);
   }
 
   returnFalse(): void {

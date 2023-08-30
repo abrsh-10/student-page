@@ -5,6 +5,9 @@ export const environment = {
   courseMaterialApiUrl: 'http://localhost:8083/api/course-material',
   topicApiUrl: 'http://localhost:8083/api/topic',
   lessonApiUrl: 'http://localhost:8083/api/lesson',
+  youtubeApiUrl: 'http://localhost:8083/youtube',
+  audioTranscribeUrl:
+    'http://localhost:8083/api/course-material/audioTranscribe/en-US',
   examApiUrl: 'http://localhost:8085/api/exam',
   assignmentApiUrl: 'http://localhost:8085/api/assignment',
   examSolutionApiUrl: 'http://localhost:8085/api/exam-solution',

@@ -16,6 +16,7 @@ export class LessonService extends DataService<Lesson> {
   protected getUrl(): string {
     return environment.lessonApiUrl;
   }
+
   getLessons(id: any): Observable<Lesson> {
     const url = `${this.getUrl()}/topic-id`;
     return this.getById(url, id);

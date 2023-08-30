@@ -22,3 +22,11 @@
         transform: rotate(360deg);
     }
 }
+.transcribe{
+    position: relative;
+}
+.transcribe>button{
+    position: absolute;
+    right: 5px;
+    top: 7px;
+}
