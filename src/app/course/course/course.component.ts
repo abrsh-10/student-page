@@ -19,6 +19,15 @@ import { Assignments } from 'src/app/models/assignments';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'src/environments/environment';
 import * as CryptoJS from 'crypto-js';
+import { TranslationService } from '../services/translation.service';
+import { getLocaleId } from '@angular/common';
+import { TranscriptionService } from '../services/transcription.service';
+import {
+  SpeechConfig,
+  AudioConfig,
+  SpeechRecognizer,
+  ResultReason,
+} from 'microsoft-cognitiveservices-speech-sdk';
 
 @Component({
   selector: 'app-course',
@@ -38,6 +47,9 @@ export class CourseComponent implements OnInit {
   showAssignment = false;
   showQuestion? = false;
   showVideo? = false;
+  showAIServices? = false;
+  showTranslate? = false;
+  showSummarize? = false;
   courseMaterials?: any;
   topics?: any;
   topicTitle?: string;
@@ -56,6 +68,12 @@ export class CourseComponent implements OnInit {
 
   videoId?: string;
 
+  translateTo?: any;
+  languages?: { language: any; name: any }[];
+  rawText?: string;
+  translatedText?: any;
+  summarizedText: any;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -66,6 +84,8 @@ export class CourseComponent implements OnInit {
     private examService: ExamService,
     private assignmentService: AssignmentService,
     private assignmentSolutionService: AssignmentSolutionService,
+    private translationService: TranslationService,
+    private transcriptionService: TranscriptionService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}
@@ -102,6 +122,7 @@ export class CourseComponent implements OnInit {
       this.showAssignment = false;
       this.showQuestion = false;
       this.showVideo = false;
+      this.showAIServices = false;
       this.showCourseMaterial = !this.showCourseMaterial;
       this.courseMaterialService
         .getCourseMaterial(this.courseId)
@@ -115,6 +136,7 @@ export class CourseComponent implements OnInit {
       this.showAssignment = false;
       this.showQuestion = false;
       this.showVideo = false;
+      this.showAIServices = false;
       this.showTopic = !this.showTopic;
       this.topicService.getTopics(this.courseId).subscribe((data) => {
         this.topics = data;
@@ -125,6 +147,7 @@ export class CourseComponent implements OnInit {
       this.showAssignment = false;
       this.showQuestion = false;
       this.showVideo = false;
+      this.showAIServices = false;
       this.showLesson = true;
       this.topicTitle = topic?.topicTitle;
       this.topicDescription = topic?.topicDescription;
@@ -138,6 +161,7 @@ export class CourseComponent implements OnInit {
       this.showAssignment = false;
       this.showQuestion = false;
       this.showVideo = false;
+      this.showAIServices = false;
       this.showExam = !this.showExam;
       this.examService.getExams(this.courseId).subscribe((data) => {
         this.examQuestions = data;
@@ -149,6 +173,7 @@ export class CourseComponent implements OnInit {
       this.showExam = false;
       this.showQuestion = false;
       this.showVideo = false;
+      this.showAIServices = false;
       this.showAssignment = !this.showAssignment;
       this.assignmentService.getAssignments(this.courseId).subscribe((data) => {
         this.assignments = data;
@@ -160,12 +185,39 @@ export class CourseComponent implements OnInit {
       this.showExam = false;
       this.showAssignment = false;
       this.showVideo = false;
+      this.showAIServices = false;
       this.showQuestion = true;
       this.examId = exam!.examId;
       this.examActiveStatus = exam!.active;
       //calculate the remaining duration
       this.examDuration =
         this.getRemainingMinutes(exam?.startTime!, exam?.duration!) * 60;
+    } else if (position == 7) {
+      this.showCourseMaterial = false;
+      this.showTopic = false;
+      this.showLesson = false;
+      this.showExam = false;
+      this.showQuestion = false;
+      this.showVideo = false;
+      this.showAssignment = false;
+      this.showAIServices = !this.showAIServices;
+      this.showTranslate = true;
+
+      this.translationService.getLanguages().subscribe((data) => {
+        this.languages = Object.entries(data.translation).map(
+          ([language, info]) => ({
+            language,
+            name: (info as { name: string }).name,
+          })
+        );
+        this.languages.sort((a, b) => a.name.localeCompare(b.name));
+        this.showTranslateBox = false;
+        this.showSummarizeBox = false;
+        this.showSummarize = false;
+      });
+      this.translationService.getAudioLanguages().subscribe((data) => {
+        this.audioLanguages = data;
+      });
     }
   }
   activateVideo(videoId: string) {
@@ -179,53 +231,74 @@ export class CourseComponent implements OnInit {
     this.videoId = videoId;
   }
   showUploadForm(assignment?: any) {
-    const data: FormData = {
-      title: 'Upload Solution Form',
-      assignments: assignment || this.assignments,
-      fileIncluded: true,
-      positiveButton: 'Upload',
-      negativeButton: 'Cancel',
-    };
-    const dialogRef = this.dialog.open(FormComponent, { data });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.assignmentSolutionService
-          .getAssignmentSolution('abrhamsisay33@gmail.com')
-          .subscribe((data) => {
-            for (let solution of data) {
-              if (solution.assignmentId == result.assignmentId) {
-                const data: PopupData = {
-                  title: 'Error',
-                  content: [
-                    'assignment solution already exists for this assignment',
-                  ],
-                  positiveButton: 'close',
-                };
-                const dialogRef = this.dialog.open(PopupComponent, { data });
-                return;
-              }
-            }
-            this.assignmentSolutionService
-              .postAssignmentSolution(result)
-              .subscribe(
-                (result) => {
-                  this.showSnackbarAction(
-                    'assignment solution successfully uploaded',
-                    'OK'
-                  );
-                },
-                (error) => {
-                  this.showSnackbarAction(
-                    'could not upload assignment solution',
-                    'OK'
-                  );
+    if (assignment == null) {
+      console.log('hello');
+      const data: FormData = {
+        title: 'Upload audio file',
+        assignments: assignment,
+        fileIncluded: true,
+        positiveButton: 'Upload',
+        negativeButton: 'Cancel',
+      };
+      const dialogRef = this.dialog.open(FormComponent, { data });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.transcriptionService
+            .transcribeAudio(result)
+            .subscribe((data) => {
+              this.rawText = data?.text;
+            });
+        }
+      });
+    } else {
+      const data: FormData = {
+        title: 'Upload Solution Form',
+        assignments: assignment || this.assignments,
+        fileIncluded: true,
+        positiveButton: 'Upload',
+        negativeButton: 'Cancel',
+      };
+      const dialogRef = this.dialog.open(FormComponent, { data });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.assignmentSolutionService
+            .getAssignmentSolution('abrhamsisay33@gmail.com')
+            .subscribe((data) => {
+              for (let solution of data) {
+                if (solution.assignmentId == result.assignmentId) {
+                  const data: PopupData = {
+                    title: 'Error',
+                    content: [
+                      'assignment solution already exists for this assignment',
+                    ],
+                    positiveButton: 'close',
+                  };
+                  const dialogRef = this.dialog.open(PopupComponent, { data });
+                  return;
                 }
-              );
-          });
-      } else {
-        return;
-      }
-    });
+              }
+              this.assignmentSolutionService
+                .postAssignmentSolution(result)
+                .subscribe(
+                  (result) => {
+                    this.showSnackbarAction(
+                      'assignment solution successfully uploaded',
+                      'OK'
+                    );
+                  },
+                  (error) => {
+                    this.showSnackbarAction(
+                      'could not upload assignment solution',
+                      'OK'
+                    );
+                  }
+                );
+            });
+        } else {
+          return;
+        }
+      });
+    }
   }
   viewSolution(assignment: any) {
     this.assignmentSolutionService
@@ -305,6 +378,14 @@ export class CourseComponent implements OnInit {
       link.click();
     });
   }
+  pdfUrl?: string;
+  viewPdf(id: string, fileName: string) {
+    this.courseMaterialService.downloadFile(id).subscribe((data: Blob) => {
+      this.pdfUrl = URL.createObjectURL(data);
+      window.open(this.pdfUrl, '_blank');
+    });
+  }
+
   bytesToMegabytes(bytes: number, decimalPlaces: number): number {
     const megabytes = bytes / (1024 * 1024);
     const factor = Math.pow(10, decimalPlaces);
@@ -352,5 +433,73 @@ export class CourseComponent implements OnInit {
     let snack = this.snackBar.open(content, action);
     snack.afterDismissed().subscribe(() => {});
     snack.onAction().subscribe(() => {});
+  }
+  showTranslateBox = false;
+  showSummarizeBox = false;
+
+  translate() {
+    this.translationService
+      .translateText(this.rawText!, this.translateTo)
+      .subscribe((data) => {
+        this.translatedText = data;
+        this.showTranslateBox = true;
+      });
+  }
+  reset() {
+    this.translatedText = '';
+    this.summarizedText.text = '';
+  }
+  changeToTranslate(boo: boolean) {
+    if (boo) {
+      this.showTranslate = true;
+      this.showSummarize = false;
+    } else {
+      this.showTranslate = false;
+      this.showSummarize = true;
+    }
+  }
+  rawText2 = '';
+  summarize() {
+    this.translationService.summarizeText(this.rawText2!).subscribe((data) => {
+      this.summarizedText = data;
+      this.showSummarizeBox = true;
+    });
+  }
+  isRecording = false;
+  audioStream: MediaStream | null = null;
+  audioLanguages: any;
+  selectedLanguage? = 'en-US';
+
+  async transcribeAudio(stream: MediaStream, language: string) {
+    const speechConfig = SpeechConfig.fromSubscription(
+      'f669abe552114ab885ecb173d0cab1dd',
+      'westeurope'
+    );
+    speechConfig.speechRecognitionLanguage = language;
+
+    const audioConfig = AudioConfig.fromStreamInput(stream);
+    const recognizer = new SpeechRecognizer(speechConfig, audioConfig);
+
+    recognizer.recognizeOnceAsync((result) => {
+      if (result.reason === ResultReason.RecognizedSpeech) {
+        this.rawText = result.text;
+        console.log('Transcribed Text:', result.text);
+      } else {
+        this.rawText = 'No speech recognized.';
+        console.log('No speech recognized.');
+      }
+
+      this.isRecording = false;
+      recognizer.close();
+      stream.getTracks().forEach((track) => track.stop());
+    });
+  }
+
+  async startRecording() {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    this.isRecording = true;
+    this.audioStream = stream;
+
+    this.transcribeAudio(stream, this.selectedLanguage!);
   }
 }
